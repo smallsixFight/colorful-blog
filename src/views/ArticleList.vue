@@ -1,0 +1,126 @@
+<template>
+    <div v-loading="loading">
+        <el-card class="page-header">
+            <span>我的文章</span>
+        </el-card>
+        <el-card>
+            <el-table :data="articleList" style="width: 100%; font-size:14px;">
+                <el-table-column align="center" label="标题" header-align="center" width="400px">
+                    <template v-slot:default="article">
+                        <span class="table-column-cell">{{ article.row.title }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="created" align="center" label="创建日期" header-align="center">
+                </el-table-column>
+                <el-table-column prop="modified" align="center" label="最近修改日期" header-align="center">
+                </el-table-column>
+                <el-table-column align="center" label="浏览量" header-align="center">
+                    <template v-slot:default="article">
+                        <span class="table-column-cell">{{ article.row.hits }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="分类" header-align="center">
+                    <template v-slot:default="article">
+                        <span class="table-column-cell">{{ article.row.category }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="状态" header-align="center">
+                    <template v-slot:default="article">
+                        <el-tag :type="article.row.status === 'publish' ? 'success' : 'warning'">
+                            {{article.row.status ==="publish" ? "已发布" : "草稿"}}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="操作" header-align="center">
+                    <template v-slot:default="article">
+                        <el-button type="text" size="small" @click="handleEdit(article.row.cid)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleDelete(article.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination class="table-pagination"
+                layout="->, prev, pager, next"
+                :total="total" 
+                :current-page.sync="page"
+                @current-change="handleCurrentPageChange">
+            </el-pagination>
+        </el-card>
+        <el-dialog :visible.sync="delVisible" title="删除" width="20%" @closed="closeDelDialog">
+            <span>确定删除吗？</span>
+            <span slot="footer">
+                <el-button @click="closeDelDialog" size="small">取 消</el-button>
+                <el-button type="primary" @click="submitDelete" size="small">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+import { stringify } from 'qs'
+export default {
+    data() {
+        return {
+            delVisible: false,
+            loading: false,
+            page: 1,
+            pageSize: 10,
+            total: 0,
+            articleList: []
+        }
+    },
+    created: function() {
+        this.loading = true
+        this.handleCurrentPageChange(1);
+    },
+    methods: {
+        handleEdit(cid) {
+            this.$router.push({path: '/articleEdit', query: { cid: cid}})
+        },
+        submitDelete() {
+            this.loading = true
+            let params = {
+                "cid": this.delParams.cid
+            }
+            this.$axios.delete(this.HOST + `/admin/api/delArticle?${stringify(params)}`)
+            .then(response => {
+                if (response.data.code === 0) {
+                    this.delVisible = false
+                    this.handleCurrentPageChange(this.page)
+                } else {
+                    this.$message.warning(response.data.message)
+                }
+            }).finally( () => {
+                this.loading = false
+            })
+        },
+        handleDelete(params) {
+            this.delVisible = true
+            this.delParams = params
+        },
+        closeDelDialog() {
+            this.delVisible = false
+            this.delParams = {}
+        },
+        handleCurrentPageChange: function(val) {
+            let queryData = {
+                "page": val,
+                "pageSize": this.pageSize
+            }
+            this.$axios.get(this.HOST + `/admin/api/articleList?${stringify(queryData)}`)
+            .then(response => {
+                if (response.data.code === 0) {
+                    let resp = response.data.data
+                    this.total = resp.total
+                    this.articleList = resp.list,
+                    this.page = val
+                } else {
+                    this.$message.error(response.data.message)
+                }
+            }).finally( () => {
+                this.loading = false
+            })
+        }
+    }
+}
+</script>
+
