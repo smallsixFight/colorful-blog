@@ -53,7 +53,7 @@
                             localStorage.setItem("accessToken", resp.token)
                             localStorage.setItem("ms_username", resp.ms_username)
                             this.$message.success(response.data.message)
-                            this.$router.push('/');
+                            this.$router.push('/admin');
                         } else {
                             this.$message.error(response.data.message)
                         }
@@ -71,7 +71,7 @@
         position: relative;
         width:100%;
         height:100%;
-        background-image: url(../assets/img/login_background.jpg);
+        background-image: url(../../assets/img/login_background.jpg);
         background-size: 100%;
     }
     .ms-title{

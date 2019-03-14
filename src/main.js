@@ -6,17 +6,30 @@ import ElementUI from 'element-ui';
 import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
 
+
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = 'http://localhost:9000'
 Vue.use(ElementUI)
 
 Vue.filter('unixTimeFormat', function(val) {
-  var date = new Date(val * 1000);
-  var Y = date.getFullYear() + '-';
-  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+  let date = new Date(val * 1000);
+  let Y = date.getFullYear() + '-';
+  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
   return Y + M + D;
+})
+
+Vue.filter('blogTimeFormat', function(val) {
+  let date = new Date(val * 1000).toDateString().split(" ");
+  return date[1] + " " + date[2] + ", " + date[3];
+})
+
+Vue.filter('archiveTimeFormat', function(val) {
+  let date = new Date(val * 1000);
+  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ': ';
+  return M + D;
 })
 
 router.beforeEach((to, from, next) => {
@@ -27,7 +40,7 @@ router.beforeEach((to, from, next) => {
     } else {
       ElementUI.Message.warning("尚未登录")
       next({
-        path: '/login',
+        path: '/admin/login',
       })
     }
   }
@@ -67,18 +80,22 @@ axios.interceptors.response.use(
           localStorage.setItem("accessToken", '')
           ElementUI.Message.warning("登录超时！")
           router.replace({
-            path: 'login'
+            path: '/admin/login'
           })
           break
         case 500:
-          ElementUI.Message.warning("服务器崩溃了~ QAQ")
+          ElementUI.Message.warning("服务器错误T_T")
           router.replace({
-            path: 'login'
+            path: '/admin/login'
           })
           break
       }
     }
-    return Promise.reject(error.response.data)
+    ElementUI.Message.warning("服务器崩溃了~ QAQ")
+    router.replace({
+      path: '/admin/login'
+    })
+    return Promise.reject(error)
   }
 )
 

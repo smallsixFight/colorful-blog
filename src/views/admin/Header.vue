@@ -4,7 +4,7 @@
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">Colorful 后台管理</div>
+        <div class="logo-management">Colorful 后台管理</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏展示 -->
@@ -14,7 +14,7 @@
                     </el-tooltip>
                 </div> -->
                 <!-- 用户头像 -->
-                <div class="user-avator"><img src="../assets/img/avator.jpg"></div>
+                <div class="user-avator"><img src="../../assets/img/avator.jpg"></div>
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import bus from './bus';
+import bus from '@/bus';
 export default {
     data() {
         return {
@@ -52,7 +52,7 @@ export default {
             if (command === 'loginout') {
                 localStorage.removeItem("ms_username")
                  localStorage.removeItem("accessToken")
-                this.$router.push('/login')
+                this.$router.push('/admin/login')
             }
         },
         // 侧边栏折叠
@@ -111,7 +111,7 @@ export default {
     cursor: pointer;
     line-height: 70px;
 }
-.header .logo{
+.header .logo-management{
     float: left;
     width:250px;
     line-height: 70px;

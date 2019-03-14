@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import bus from './bus';
+import bus from '@/bus';
 export default {
     data() {
         return {
@@ -108,7 +108,7 @@ export default {
     },
     computed: {
         onRoutes() {
-            return this.$route.path.replace('/', '')
+            return this.$route.path.replace('/admin/', '')
         }
     },
     created() {

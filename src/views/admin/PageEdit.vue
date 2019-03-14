@@ -71,7 +71,7 @@ export default {
                 }).then(response => {
                     if (response.data.code === 0) {
                         this.dialogFormVisible = false
-                        this.$router.replace('/pageList')
+                        this.$router.replace('/admin/pageList')
                         this.$message.success(response.data.message)
                     } else {
                         this.$message.warning(response.data.message)

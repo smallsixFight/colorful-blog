@@ -1,33 +1,28 @@
 <template>
     <div v-loading="loading">
         <el-card class="page-header">
-            <span>我的文章</span>
+            <span>自定义页面</span>
         </el-card>
         <el-card>
-            <el-table :data="articleList" style="width: 100%; font-size:14px;">
+            <el-table :data="pageList" style="width: 100%;font-size:14px;">
                 <el-table-column align="center" label="标题" header-align="center" width="400px">
-                    <template v-slot:default="article">
-                        <span class="table-column-cell">{{ article.row.title }}</span>
+                    <template v-slot:default="page">
+                        <span class="table-column-cell">{{ page.row.title }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="created" align="center" label="创建日期" header-align="center">
                 </el-table-column>
                 <el-table-column prop="modified" align="center" label="最近修改日期" header-align="center">
                 </el-table-column>
-                <el-table-column align="center" label="浏览量" header-align="center">
-                    <template v-slot:default="article">
-                        <span class="table-column-cell">{{ article.row.hits }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="分类" header-align="center">
-                    <template v-slot:default="article">
-                        <span class="table-column-cell">{{ article.row.category }}</span>
+                <el-table-column align="center" label="自定义路径" header-align="center">
+                    <template v-slot:default="page">
+                        <span class="table-column-cell">{{ page.row.slug }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="状态" header-align="center">
-                    <template v-slot:default="article">
-                        <el-tag :type="article.row.status === 'publish' ? 'success' : 'warning'">
-                            {{article.row.status ==="publish" ? "已发布" : "草稿"}}
+                    <template v-slot:default="page">
+                        <el-tag :type="page.row.status === 'publish' ? 'success' : 'warning'">
+                            {{page.row.status ==="publish" ? "已发布" : "草稿"}}
                         </el-tag>
                     </template>
                 </el-table-column>
@@ -60,28 +55,29 @@ import { stringify } from 'qs'
 export default {
     data() {
         return {
-            delVisible: false,
-            loading: false,
             page: 1,
             pageSize: 10,
+            delVisible: false,
+            delParams: {},
             total: 0,
-            articleList: []
+            pageList: [],
+            loading: false
         }
-    },
+    }, 
     created: function() {
-        this.loading = true
         this.handleCurrentPageChange(1);
     },
     methods: {
-        handleEdit(cid) {
-            this.$router.push({path: '/articleEdit', query: { cid: cid}})
+        handleDelete(params) {
+            this.delVisible = true
+            this.delParams = params
         },
         submitDelete() {
             this.loading = true
             let params = {
                 "cid": this.delParams.cid
             }
-            this.$axios.delete(this.HOST + `/admin/api/delArticle?${stringify(params)}`)
+            this.$axios.delete(this.HOST + `/admin/api/delPage?${stringify(params)}`)
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
@@ -93,28 +89,28 @@ export default {
                 this.loading = false
             })
         },
-        handleDelete(params) {
-            this.delVisible = true
-            this.delParams = params
-        },
         closeDelDialog() {
             this.delVisible = false
             this.delParams = {}
         },
+        handleEdit(cid) {
+            this.$router.push({path: '/admin/pageEdit', query: { cid: cid}})
+        },
         handleCurrentPageChange: function(val) {
+            this.loading = true
             let queryData = {
                 "page": val,
                 "pageSize": this.pageSize
             }
-            this.$axios.get(this.HOST + `/admin/api/articleList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/api/pageList?${stringify(queryData)}`)
             .then(response => {
                 if (response.data.code === 0) {
                     let resp = response.data.data
                     this.total = resp.total
-                    this.articleList = resp.list,
+                    this.pageList = resp.list,
                     this.page = val
                 } else {
-                    this.$message.error(response.data.message)
+                    this.$message.warning(response.data.message)
                 }
             }).finally( () => {
                 this.loading = false
@@ -123,4 +119,3 @@ export default {
     }
 }
 </script>
-
