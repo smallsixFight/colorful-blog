@@ -2,9 +2,9 @@
     <div class="index">
         <!-- <div class="background-image"></div> -->
         <v-header></v-header>
-        <div id="body" class="container-fluid test">
+        <div id="body" class="container-fluid">
             <transition name="move" mode="out-in">
-                <keep-alive include="article-list">
+                <keep-alive include="articleList">
                     <router-view></router-view>
                 </keep-alive>
             </transition>

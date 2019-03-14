@@ -66,7 +66,7 @@
 <script>
 import { stringify } from 'qs'
 export default {
-    name: "article-list",
+    name: "articleList",
     data() {
         return {
             loading: false,

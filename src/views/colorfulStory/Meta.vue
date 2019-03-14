@@ -77,6 +77,7 @@
 <script>
 import { stringify } from 'qs'
 export default {
+    name: "meta",
     data() {
         return {
             loading: false,
@@ -141,4 +142,8 @@ export default {
     }
 }
 </script>
-
+<style>
+.current {
+    border-bottom: 1px solid #414141;
+}
+</style>
