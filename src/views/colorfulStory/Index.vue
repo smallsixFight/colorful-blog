@@ -4,7 +4,7 @@
         <v-header></v-header>
         <div id="body" class="container-fluid">
             <transition name="move" mode="out-in">
-                <keep-alive include="articleList">
+                <keep-alive include="articleList,meta" :max="1">
                     <router-view></router-view>
                 </keep-alive>
             </transition>

@@ -93,11 +93,12 @@ axios.interceptors.response.use(
           })
           break
       }
+    } else {
+      ElementUI.Message.error("服务器崩溃了~ QAQ")
+      router.replace({
+        path: getPath() + 'login'
+      })
     }
-    ElementUI.Message.error("服务器崩溃了~ QAQ")
-    router.replace({
-      path: getPath() + 'login'
-    })
     return Promise.reject(error)
   }
 )

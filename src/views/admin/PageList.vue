@@ -81,6 +81,7 @@ export default {
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
+                    this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
                 } else {
                     this.$message.warning(response.data.message)
