@@ -136,7 +136,7 @@
             <el-col :span="12">
                 <el-card shadow="hover" style="height:260px;">
                     <div slot="header" class="clearfix">
-                        <span>最新日志</span>
+                        <span>最新附件</span>
                     </div>
                         <el-table :data="attachList" size="small" height="200" style="width: 100%;font-size:14px;">
                             <el-table-column label="名称" align="center" header-align="center" width="200px;">
