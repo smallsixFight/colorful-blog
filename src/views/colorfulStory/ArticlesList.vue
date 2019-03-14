@@ -4,7 +4,7 @@
         <div id="main" role="main">
             <ul class="post-list clearfix">
                 <li class="post-item grid-item" itemscope itemtype="http://schema.org/BlogPosting" v-for="article in articlesList" :key="article.cid">
-                    <router-link :to="'article/' + article.cid" class="post-link">
+                    <router-link :to="'/article/' + article.cid" class="post-link">
                         <h3 class="post-title">
                             <time class="index-time" :datatime="article.created|unixTimeFormat">{{ article.created | blogTimeFormat }}</time><br>
                             {{article.title}}
@@ -66,7 +66,7 @@
 <script>
 import { stringify } from 'qs'
 export default {
-    name: "index",
+    name: "article-list",
     data() {
         return {
             loading: false,

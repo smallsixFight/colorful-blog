@@ -4,7 +4,9 @@
         <v-header></v-header>
         <div id="body" class="container-fluid test">
             <transition name="move" mode="out-in">
-                <router-view></router-view>>
+                <keep-alive include="article-list">
+                    <router-view></router-view>
+                </keep-alive>
             </transition>
         </div>
         <v-footer></v-footer>

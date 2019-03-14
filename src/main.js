@@ -11,6 +11,10 @@ Vue.prototype.$axios = axios
 Vue.prototype.HOST = 'http://localhost:9000'
 Vue.use(ElementUI)
 
+function getPath() {
+  return window.location.pathname.split("/")[1];
+}
+
 Vue.filter('unixTimeFormat', function(val) {
   let date = new Date(val * 1000);
   let Y = date.getFullYear() + '-';
@@ -83,16 +87,16 @@ axios.interceptors.response.use(
           })
           break
         case 500:
-          ElementUI.Message.warning("服务器错误T_T")
+          ElementUI.Message.error("服务器错误T_T")
           router.replace({
-            path: '/admin/login'
+            path: getPath()
           })
           break
       }
     }
-    ElementUI.Message.warning("服务器崩溃了~ QAQ")
+    ElementUI.Message.error("服务器崩溃了~ QAQ")
     router.replace({
-      path: '/admin/login'
+      path: getPath()
     })
     return Promise.reject(error)
   }
