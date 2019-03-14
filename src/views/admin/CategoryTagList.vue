@@ -142,7 +142,7 @@ export default {
                     this.categoryTagList = resp.list,
                     this.page = val
                 } else {
-                    this.$message.warning(rsponse.data.message)
+                    this.$message.warning(response.data.message)
                 }
             }).finally( () => {
                 this.loading = false
