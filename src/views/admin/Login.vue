@@ -53,7 +53,7 @@
                             localStorage.setItem("accessToken", resp.token)
                             localStorage.setItem("ms_username", resp.ms_username)
                             this.$message.success(response.data.message)
-                            this.$router.push('/admin');
+                            this.$router.replace('/admin');
                         } else {
                             this.$message.error(response.data.message)
                         }

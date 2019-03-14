@@ -12,7 +12,9 @@ Vue.prototype.HOST = 'http://localhost:9000'
 Vue.use(ElementUI)
 
 function getPath() {
-  return window.location.pathname.split("/")[1];
+  const path = window.location.pathname.split("/")[1]
+  console.log(path)
+  return '/' + window.location.pathname.split("/")[1];
 }
 
 Vue.filter('unixTimeFormat', function(val) {
@@ -96,7 +98,7 @@ axios.interceptors.response.use(
     }
     ElementUI.Message.error("服务器崩溃了~ QAQ")
     router.replace({
-      path: getPath()
+      path: getPath() + '/login'
     })
     return Promise.reject(error)
   }
