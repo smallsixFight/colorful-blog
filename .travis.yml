@@ -5,5 +5,3 @@ node_js:
 cache: yarn
 
 install: yarn
-
-script: yarn test
