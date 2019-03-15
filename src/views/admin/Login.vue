@@ -71,7 +71,7 @@
     position: relative;
     width:100%;
     height:100%;
-    background-image: url(http://media.lamlake.com/blog_background.jpg);
+    background-image: url();
     background-size: 100%;
 }
 .ms-title {

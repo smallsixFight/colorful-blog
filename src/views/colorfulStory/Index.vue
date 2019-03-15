@@ -33,7 +33,7 @@ export default {
 }
 .index::before {
     /* position: relative; */
-    background-image: url(http://media.lamlake.com/blog_background.jpg);
+    background-image: url();
     content: '';
     background-repeat: no-repeat;
     background-position: center;
