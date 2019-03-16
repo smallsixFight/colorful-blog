@@ -31,7 +31,7 @@
                 <el-table-column align="center" label="操作" header-align="center">
                     <template v-slot:default="categoryTag">
                         <el-button type="text" size="small" v-if="categoryTag.row.name !== '默认分类'" @click="handleEdit(categoryTag.row)">编辑</el-button>
-                        <el-button type="text" size="small" @click="handleDelete(categoryTag.row)">删除</el-button>
+                        <el-button type="text" size="small" v-if="categoryTag.row.name !== '默认分类'" @click="handleDelete(categoryTag.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>

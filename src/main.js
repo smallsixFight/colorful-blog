@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = 'http://localhost:9000'
+// Vue.prototype.HOST = ''
 Vue.use(ElementUI)
 
 function getPath() {

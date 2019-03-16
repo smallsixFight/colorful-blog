@@ -139,11 +139,13 @@ export default {
         .then(response => {
             if (response.data.code === 0) {
                 const resp = response.data.data
-                this.attachSettingForm.qiNiuYunDomain = resp.blogOptions.qiNiuYunDomain || '';
-                this.attachSettingForm.qiNiuYunAccessKey = resp.blogOptions.qiNiuYunAccessKey || '';
-                this.attachSettingForm.qiNiuYunSecretKey = resp.blogOptions.qiNiuYunSecretKey || '';
-                this.attachSettingForm.qiNiuYunBucket = resp.blogOptions.qiNiuYunBucket || '';
-                this.attachSettingForm.attachSavePlace = resp.blogOptions.attachSavePlace;
+                if (resp.blogOptions) {
+                    this.attachSettingForm.qiNiuYunDomain = resp.blogOptions.qiNiuYunDomain || '';
+                    this.attachSettingForm.qiNiuYunAccessKey = resp.blogOptions.qiNiuYunAccessKey || '';
+                    this.attachSettingForm.qiNiuYunSecretKey = resp.blogOptions.qiNiuYunSecretKey || '';
+                    this.attachSettingForm.qiNiuYunBucket = resp.blogOptions.qiNiuYunBucket || '';
+                    this.attachSettingForm.attachSavePlace = resp.blogOptions.attachSavePlace;
+                }
                 this.basicSettingForm.blogName = resp.users.blogName;
                 this.basicSettingForm.username = resp.users.username;
                 this.basicSettingForm.screenName = resp.users.screenName;

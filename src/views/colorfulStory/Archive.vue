@@ -58,6 +58,7 @@ export default {
     },
     methods: {
         getArchiveInfo() {
+            this.loading = true
             this.$axios.get(this.HOST + `/api/archivesInfo`)
             .then(response => {
                 if (response.data.code === 0) {
