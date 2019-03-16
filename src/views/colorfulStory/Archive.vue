@@ -28,7 +28,7 @@
                 <h3>Post</h3>
                 <div id="archives" v-if="articles">
                     <div v-for="item in articles" :key="item.date">
-                        <h3>{{item.date}}</h3>
+                        <h4>{{item.date}}</h4>
                         <ul>
                             <li v-for="article in item.articles" :key="article.cid">
                                 {{ article.created | archiveTimeFormat }}

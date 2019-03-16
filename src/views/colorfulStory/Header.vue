@@ -76,6 +76,6 @@ export default {
 
 
 <style scoped>
-@import "https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css";
+@import "../../assets/css/bootstrap.min.css";
 @import "../../assets/css/main.css";
 </style>
