@@ -37,7 +37,7 @@ Vue.filter('archiveTimeFormat', function(val) {
 })
 
 router.beforeEach((to, from, next) => {
-  let accessToken = localStorage.getItem("accessToken")
+  let accessToken = sessionStorage.getItem("accessToken")
   if (to.meta.requireAuth) {
     if (accessToken) {
       next()
@@ -63,8 +63,8 @@ router.beforeEach((to, from, next) => {
 
 axios.interceptors.request.use(
   config => {
-    if (localStorage.getItem("accessToken")) {
-      config.headers.Authorization = localStorage.getItem("accessToken")
+    if (sessionStorage.getItem("accessToken")) {
+      config.headers.Authorization = sessionStorage.getItem("accessToken")
     }
     return config
   },
@@ -81,7 +81,7 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          localStorage.setItem("accessToken", '')
+        sessionStorage.setItem("accessToken", '')
           ElementUI.Message.warning("登录超时！")
           router.replace({
             path: '/admin/login'
@@ -95,7 +95,7 @@ axios.interceptors.response.use(
           break
       }
     } else {
-      ElementUI.Message.error("服务器崩溃了~ QAQ")
+      ElementUI.Message.error("无法连接服务器~ QAQ")
       router.replace({
         path: getPath() + 'login'
       })

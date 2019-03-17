@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         username() {
-            let username = localStorage.getItem("ms_username");
+            let username = sessionStorage.getItem("ms_username");
             return username || this.name
         }
     },
@@ -50,8 +50,8 @@ export default {
         // 用户名下拉菜单选择时间
         handleCommand(command) {
             if (command === 'loginout') {
-                localStorage.removeItem("ms_username")
-                 localStorage.removeItem("accessToken")
+                sessionStorage.removeItem("ms_username")
+                 sessionStorage.removeItem("accessToken")
                 this.$router.push('/admin/login')
             }
         },

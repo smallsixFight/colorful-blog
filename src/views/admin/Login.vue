@@ -50,8 +50,8 @@
                     }).then(response => {
                         if (response.data.code === 0) {
                             const resp = response.data.data
-                            localStorage.setItem("accessToken", resp.token)
-                            localStorage.setItem("ms_username", resp.ms_username)
+                            sessionStorage.setItem("accessToken", resp.token)
+                            sessionStorage.setItem("ms_username", resp.ms_username)
                             this.$message.success(response.data.message)
                             this.$router.replace('/admin');
                         } else {
