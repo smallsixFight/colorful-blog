@@ -7,7 +7,9 @@
                 <div class="post-meta">
                     <p>
                         <time class="index-time" :datatime="article.created|unixTimeFormat">{{ article.created | blogTimeFormat }}</time> in 
-                        {{ article.category }}
+                        <router-link :to="{ path: '/categories', query: { mid: categoryList[0].mid, name: categoryList[0].name } }">
+                            {{categoryList[0].name}}
+                        </router-link>
                     </p>
                 </div>
 
@@ -16,8 +18,12 @@
                 </div>
 
                 <div style="display:block;margin-bottom:2em;" class="clearfix">
-                    <section style="float:left;">
-                        <span itemprop="keywords" class="tags">{{article.tags}}</span>
+                    <section style="float:left;" v-if="tagList.length > 0">
+                        <span itemprop="keywords" class="tags">tag(s):</span>
+                        <router-link  v-for="tag in tagList" :key="tag.mid"
+                        :to="{ path: '/tags', query: { mid: tag.mid, name: tag.name } }">
+                            {{tag.name}}
+                        </router-link>
                     </section>
                     <section style="float:right;">
                         <!-- <span><a id="btn-comments" href="javascript:isComments();">show comments</a></span> ·  -->
@@ -40,7 +46,9 @@ export default {
     data() {
         return {
             loading: false,
-            article: {}
+            article: {},
+            categoryList: [],
+            tagList: []
         }
     },
     created: function() {
@@ -64,7 +72,10 @@ export default {
             this.$axios.get(this.HOST + `/api/getArticleWithPublish?${stringify(params)}`)
             .then(response => {
                 if (response.data.code === 0) {
-                    this.article = response.data.data
+                    const resp = response.data
+                    this.article = resp.data.article
+                    this.categoryList = resp.data.categoryList
+                    this.tagList = resp.data.tagList
                 } else {
                     this.$router.replace("/404")
                     this.$message.warning(response.data.message)

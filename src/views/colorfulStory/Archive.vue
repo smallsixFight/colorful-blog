@@ -9,7 +9,7 @@
                     <h4>Category</h4>
                     <ul v-if="categories" class="a_tag">
                         <li v-for="category in categories" :key="category.mid">
-                            <router-link :to="{ path: 'categories', query: { mid: category.mid, name: category.name } }">
+                            <router-link :to="{ path: '/categories', query: { mid: category.mid, name: category.name } }">
                                 {{category.name}}
                             </router-link>
                         </li>
