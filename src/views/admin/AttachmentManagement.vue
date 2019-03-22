@@ -17,7 +17,6 @@
                 multiple>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或 <em> 点击上传</em></div>
-                 <!-- <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div> -->
             </el-upload>
             <el-table :data="attachmentList" style="width: 100%; font-size:14px; margin-top: 10px;">
                 <el-table-column align="center" label="名称" header-align="center">
@@ -27,7 +26,10 @@
                 </el-table-column>
                 <el-table-column prop="type" align="center" label="类型" header-align="center">
                 </el-table-column>
-                <el-table-column prop="place" align="center" label="保存位置" header-align="center">
+                <el-table-column align="center" label="保存位置" header-align="center">
+                    <template v-slot:default="attachment">
+                        <span class="table-column-cell">{{ attachment.row.place == 'local' ? "本地" : '七牛云' }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column align="center" label="上传时间" header-align="center">
                     <template v-slot:default="attachment">
@@ -42,7 +44,7 @@
                 <el-table-column align="center" label="操作" header-align="center">
                     <template v-slot:default="attachment">
                         <el-button type="text" size="small" @click="handlePreview(attachment.row)">在线查看</el-button>
-                        <el-button type="text" size="small" @click="downloadFile(attachment.row.path)">下载</el-button>
+                        <el-button type="text" size="small" @click="downloadFile(attachment.row)">下载</el-button>
                         <el-button type="text" size="small" @click="handleDelete(attachment.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -69,6 +71,7 @@
 
 <script>
 import { stringify } from 'qs'
+import * as qiniu from 'qiniu-js'
 export default {
     data() {
         return {
@@ -81,16 +84,67 @@ export default {
             delVisible: false,
             delId: null,
             previewVisible: false,
-            previewImgPath : ''
+            previewImgPath : '',
+            uploadQiNiuFile: {}
         }
     },
     created: function() {
         this.handleCurrentPageChange(1);
     },
     methods: {
-        uploadFile(params) {
-            this.loading = true
-            let fileObject = params.file;
+        uploadToQiNiu(fileObject) {
+            this.uploadQiNiuFile = fileObject
+            this.$axios.get(this.HOST + "/admin/api/getUpToken")
+            .then(response => {
+                if (response.data.code !== 0) {
+                    this.$message.warning("获取上传凭证失败！")
+                    return
+                }
+                return response.data.data
+            }).then(result => {
+                const key = fileObject.name
+                const token = result
+                const putExtra = {
+                    fname: "",
+                    params: {},
+                    mimeType: [] || null
+                }
+                const config = {
+                    useCdnDomain: true,
+                    region: qiniu.region.z0,
+                }
+                let observable = qiniu.upload(fileObject, key, token, putExtra, config);
+                observable.subscribe(this.next, this.uploadQiNiuError)
+            })
+        },
+        saveQiNiuFileInfo() {
+            this.$axios.post(this.HOST + "/admin/api/saveQiNiuFileInfo", {
+                name: this.uploadQiNiuFile.name,
+                size: this.uploadQiNiuFile.size,
+                type: this.uploadQiNiuFile.type
+            }).then(response => {
+                if (response.data.code === 0) {
+                    this.handleCurrentPageChange(this.page)
+                    this.$message.success(response.data.message)
+                } else if (response.data.code === 1) {
+                    this.handleCurrentPageChange(this.page)
+                    this.$message.warning(response.data.message)
+                } else
+                    this.$message.error(response.data.message)
+            }).finally( () => {
+                this.loading = false
+                this.uploadQiNiuFile = {}
+            })
+        },
+        next(response) {
+            if (response.total.percent === 100) {
+                this.saveQiNiuFileInfo()
+            }
+        },
+        uploadQiNiuError(err) {
+            this.$message.error(err.message)
+        },
+        uploadToServer(fileObject) {
             let formData = new FormData();
             formData.append("file", fileObject);
             this.$axios.post(this.HOST + "/admin/api/upload", formData, {
@@ -105,8 +159,32 @@ export default {
                 this.loading = false
             })
         },
+        uploadFile(params) {
+            this.loading = true
+            let fileObject = params.file;
+            this.$axios.get(this.HOST + "/admin/api/getUploadLocation")
+            .then(response => {
+                if (response.data.code !== 0) {
+                    this.$message.error(response.data.message)
+                }
+                return response.data.data
+            }).then(result => {
+                if (result === "local") {
+                    this.uploadToServer(fileObject)
+                } else {
+                    this.uploadToQiNiu(fileObject)
+                }
+            })
+            
+        },
         handlePreview(params) {
             this.loading = true
+            if (params.place === "qiNiu") {
+                this.previewVisible = true
+                this.previewImgPath = params.path;
+                this.loading = false
+                return
+            }
             let queryData = {
                 fileName: params.path
             }
@@ -165,21 +243,34 @@ export default {
                 this.loading = false
             })
         },
-        download(resp) {
+        downloadFromQiNiu(fileInfo) {
+            this.$axios({
+                method: 'get',
+                url: fileInfo.path,
+                responseType: 'blob'
+            }).then(response => {
+                this.download(response, fileInfo.name)
+            })
+        },
+        download(resp, fileName) {
             if (!resp.data)
                 return
             let url = window.URL.createObjectURL(new Blob([resp.data]))
             let link = document.createElement('a')
             link.style.display = 'none'
             link.href = url
-            link.setAttribute('download', resp.headers.filename)
+            link.setAttribute('download', resp.headers.filename || fileName)
             
             document.body.appendChild(link)
             link.click()
         },
-        downloadFile(fileName) {
+        downloadFile(fileInfo) {
+            if (fileInfo.place === 'qiNiu') {
+                this.downloadFromQiNiu(fileInfo)
+                return
+            }
             let queryData = {
-                "fileName": fileName
+                "fileName": fileInfo.path
             }
             this.$axios({
                 method: 'post',

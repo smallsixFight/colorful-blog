@@ -154,7 +154,7 @@
                                     <span class="table-column-cell">{{ attach.row.created | unixTimeFormat }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="date" align="center" label="位置" header-align="center">
+                            <el-table-column align="center" label="位置" header-align="center">
                                 <template v-slot:default="attach">
                                     <span class="table-column-cell">{{ attach.row.place == 'local' ? "本地" : '七牛云' }}</span>
                                 </template>
