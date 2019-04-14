@@ -38,3 +38,17 @@ export default {
 }
 </script>
 
+<style>
+.content::-webkit-scrollbar {
+    width:8px;
+    height:8px;
+}
+.content::-webkit-scrollbar-thumb {
+    height:40px;
+    background-color:#aaa; 
+    border-radius: 16px;
+}
+.content::-webkit-scrollbar-thumb:hover {
+    background-color:#bbb;
+}
+</style>

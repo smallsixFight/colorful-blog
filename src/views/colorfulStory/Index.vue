@@ -50,11 +50,11 @@ export default {
 }
 .index::-webkit-scrollbar-thumb {
     height:40px;
-    background-color:#eee; 
+    background-color:#aaa; 
     border-radius: 16px;
 }
 .index::-webkit-scrollbar-thumb:hover {
-    background-color:#ddd;
+    background-color:#bbb;
 }
 </style>
 
