@@ -7,9 +7,12 @@
                 <div class="post-meta">
                     <p>
                         <time class="index-time" :datatime="article.created|unixTimeFormat">{{ article.created | blogTimeFormat }}</time> in 
-                        <router-link :to="{ path: '/categories', query: { mid: categoryList[0].mid, name: categoryList[0].name } }">
-                            {{categoryList[0].name}}
-                        </router-link>
+                        <section v-if="categoryList.length > 0">
+                            <router-link  v-for="category in categoryList" :key="category.mid"
+                            :to="{ path: '/categories', query: { mid: category.mid, name: category.name } }">
+                                {{category.name}}
+                            </router-link>
+                        </section>
                     </p>
                 </div>
 
