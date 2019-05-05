@@ -9,7 +9,7 @@
                 v-for="item in bookInfo.readingBookList"
                 :key="item.photoUrl"
                 :title="item.name">
-                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl + ')'}"></div>
+                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl.replace('https://', 'https://i0.wp.com/') + ')'}"></div>
                 <div class="doubanboard-title">{{item.name}}</div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 v-for="item in bookInfo.wishReadBookList"
                 :key="item.photoUrl"
                 :title="item.name">
-                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl + ')'}"></div>
+                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl.replace('https://', 'https://i0.wp.com/') + ')'}"></div>
                 <div class="doubanboard-title">{{item.name}}</div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                 v-for="item in bookInfo.readBookList"
                 :key="item.photoUrl"
                 :title="item.name">
-                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl + ')'}"></div>
+                <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.photoUrl.replace('https://', 'https://i0.wp.com/') + ')'}"></div>
                 <div class="doubanboard-title">{{item.name}}</div>
             </div>
         </div>
