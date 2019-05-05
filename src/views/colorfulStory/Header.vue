@@ -10,6 +10,9 @@
                         <a target="_blank" href="https://gitHub.com/smallsixFight">
                             <span class="b">GitHub</span>
                         </a>
+                        <router-link to="/read">
+                            <span class="b">Read</span>
+                        </router-link>
                         <router-link to="/archive">
                             <span class="b">Archive</span>
                         </router-link>

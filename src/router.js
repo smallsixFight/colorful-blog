@@ -33,6 +33,11 @@ export default new Router({
           meta: { requireAuth: false }
         },
         {
+          path: '/read',
+          component: () => import('./views/colorfulStory/Read.vue'),
+          meta: { requireAuth: false }
+        },
+        {
           path: '/categories',
           component: () => import('./views/colorfulStory/Meta.vue'),
           meta: { requireAuth: false }
