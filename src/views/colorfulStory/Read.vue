@@ -56,7 +56,6 @@ export default {
             this.loading = true
             this.$axios.get(this.HOST + `/api/getBookInfo`)
             .then(response => {
-                console.log(response.data)
                 if (response.data.code !== 0) {
                     this.$message.error(response.data.message)
                 }
