@@ -85,8 +85,8 @@ export default {
                 },
                 {
                     icon: 'el-icon-upload',
-                    index: 'attachmentManagement',
-                    title: '附件管理'
+                    index: 'attachManagement',
+                    title: '七牛云存储'
                 },
                 {
                     icon: 'el-icon-share',

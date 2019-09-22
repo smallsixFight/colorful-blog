@@ -4,31 +4,26 @@
             <span>自定义页面</span>
         </el-card>
         <el-card>
-            <el-table :data="pageList" style="width: 100%;font-size:14px;">
-                <el-table-column align="center" label="标题" header-align="center" width="400px">
+            <el-table :data="pageList" style="width: 100%;font-size:16px;">
+                <el-table-column align="center" label="标题" width="400px">
                     <template v-slot:default="page">
                         <span class="table-column-cell">{{ page.row.title }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="created" align="center" label="创建日期" header-align="center">
+                <el-table-column prop="create_time" align="center" label="创建日期">
                 </el-table-column>
-                <el-table-column prop="modified" align="center" label="最近修改日期" header-align="center">
+                <el-table-column prop="modify_time" align="center" label="最近修改日期">
                 </el-table-column>
-                <el-table-column align="center" label="自定义路径" header-align="center">
+                <el-table-column align="center" label="状态">
                     <template v-slot:default="page">
-                        <span class="table-column-cell">{{ page.row.slug }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="状态" header-align="center">
-                    <template v-slot:default="page">
-                        <el-tag :type="page.row.status === 'publish' ? 'success' : 'warning'">
-                            {{page.row.status ==="publish" ? "已发布" : "草稿"}}
+                        <el-tag :type="page.row.status ? 'success' : 'warning'">
+                            {{page.row.status ? "已发布" : "草稿"}}
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="操作" header-align="center">
+                <el-table-column align="center" label="操作">
                     <template v-slot:default="article">
-                        <el-button type="text" size="small" @click="handleEdit(article.row.cid)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleEdit(article.row.id)">编辑</el-button>
                         <el-button type="text" size="small" @click="handleDelete(article.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -74,10 +69,7 @@ export default {
         },
         submitDelete() {
             this.loading = true
-            let params = {
-                "cid": this.delParams.cid
-            }
-            this.$axios.delete(this.HOST + `/admin/api/delPage?${stringify(params)}`)
+            this.$axios.delete(this.HOST + `/admin/custom/page/del/` + this.delParams.id)
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
@@ -94,8 +86,8 @@ export default {
             this.delVisible = false
             this.delParams = {}
         },
-        handleEdit(cid) {
-            this.$router.push({path: '/admin/pageEdit', query: { cid: cid}})
+        handleEdit(id) {
+            this.$router.push({path: '/admin/pageEdit', query: { id: id}})
         },
         handleCurrentPageChange: function(val) {
             this.loading = true
@@ -103,12 +95,12 @@ export default {
                 "page": val,
                 "pageSize": this.pageSize
             }
-            this.$axios.get(this.HOST + `/admin/api/pageList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/custom/page/list?${stringify(queryData)}`)
             .then(response => {
-                if (response.data.code === 0) {
-                    let resp = response.data.data
+                if (response.data.success) {
+                    let resp = response.data
                     this.total = resp.total
-                    this.pageList = resp.list,
+                    this.pageList = resp.data,
                     this.page = val
                 } else {
                     this.$message.warning(response.data.message)

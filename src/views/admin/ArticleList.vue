@@ -4,36 +4,31 @@
             <span>我的文章</span>
         </el-card>
         <el-card>
-            <el-table :data="articleList" style="width: 100%; font-size:14px;">
-                <el-table-column align="center" label="标题" header-align="center" width="400px">
+            <el-table :data="articleList" style="width: 100%; font-size:16px;">
+                <el-table-column align="center" label="标题" width="400px">
                     <template v-slot:default="article">
                         <span class="table-column-cell">{{ article.row.title }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="created" align="center" label="创建日期" header-align="center">
+                <el-table-column prop="create_time" align="center" label="创建日期">
                 </el-table-column>
-                <el-table-column prop="modified" align="center" label="最近修改日期" header-align="center">
+                <el-table-column prop="modify_time" align="center" label="最近修改日期">
                 </el-table-column>
                 <el-table-column align="center" label="浏览量" header-align="center">
                     <template v-slot:default="article">
                         <span class="table-column-cell">{{ article.row.hits }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="分类" header-align="center">
+                <el-table-column align="center" label="状态">
                     <template v-slot:default="article">
-                        <span class="table-column-cell">{{ article.row.category }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="状态" header-align="center">
-                    <template v-slot:default="article">
-                        <el-tag :type="article.row.status === 'publish' ? 'success' : 'warning'">
-                            {{article.row.status ==="publish" ? "已发布" : "草稿"}}
+                        <el-tag :type="article.row.status ? 'success' : 'warning'">
+                            {{article.row.status ? "已发布" : "草稿"}}
                         </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作" header-align="center">
                     <template v-slot:default="article">
-                        <el-button type="text" size="small" @click="handleEdit(article.row.cid)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleEdit(article.row.id)">编辑</el-button>
                         <el-button type="text" size="small" @click="handleDelete(article.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -72,15 +67,12 @@ export default {
         this.handleCurrentPageChange(1);
     },
     methods: {
-        handleEdit(cid) {
-            this.$router.push({path: '/admin/articleEdit', query: { cid: cid}})
+        handleEdit(id) {
+            this.$router.push({path: '/admin/articleEdit', query: { id: id}})
         },
         submitDelete() {
             this.loading = true
-            let params = {
-                "cid": this.delParams.cid
-            }
-            this.$axios.delete(this.HOST + `/admin/api/delArticle?${stringify(params)}`)
+            this.$axios.delete(this.HOST + `/admin/article/del/` + this.delParams.id)
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
@@ -107,12 +99,13 @@ export default {
                 "page": val,
                 "pageSize": this.pageSize
             }
-            this.$axios.get(this.HOST + `/admin/api/articleList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/article/list?${stringify(queryData)}`)
             .then(response => {
-                if (response.data.code === 0) {
-                    let resp = response.data.data
+                console.log(response)
+                if (response.data.success) {
+                    let resp = response.data
                     this.total = resp.total
-                    this.articleList = resp.list,
+                    this.articleList = resp.data,
                     this.page = val
                 } else {
                     this.$message.error(response.data.message)

@@ -5,40 +5,40 @@
         </el-card>
         <el-card>
             <el-button type="primary" size="small" @click="dialogFormVisible = true">新增</el-button>
-            <el-table :data="linkList" style="width: 100%;font-size:14px;">
-                <el-table-column label="名称" header-align="center" align="center">
+            <el-table :data="link_list" style="width: 100%;font-size:14px;">
+                <el-table-column label="URL" align="center">
                     <template v-slot:default="link">
-                        <span class="table-column-cell">{{ link.row.content }}</span>
+                        <span class="table-column-cell">{{ link.row.url }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="所有者" header-align="center" align="center">
+                <el-table-column label="所有者" align="center">
                     <template v-slot:default="link">
                         <span class="table-column-cell">{{ link.row.owner }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="描述" header-align="center" align="center">
+                <el-table-column label="描述" align="center">
                     <template v-slot:default="link">
                         <span class="table-column-cell">{{ link.row.description }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" header-align="center" align="center">
+                <el-table-column label="状态" align="center">
                     <template v-slot:default="link">
-                        <el-tag :type="link.row.status === 'publish' ? '' : 'success'">
-                            {{ link.row.status ==="publish" ? "发布" : "待发布" }}
+                        <el-tag :type="link.row.status ? 'success' : 'warning'">
+                            {{ link.row.status ? "发布" : "待发布" }}
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="创建日期" header-align="center">
+                <el-table-column align="center" label="创建日期">
                     <template v-slot:default="link">
-                        <span class="table-column-cell">{{ link.row.created | unixTimeFormat }}</span>
+                        <span class="table-column-cell">{{ link.row.create_time }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="最新修改日期" header-align="center">
+                <el-table-column align="center" label="最新修改日期">
                     <template v-slot:default="link">
-                        <span class="table-column-cell">{{ link.row.modified | unixTimeFormat }}</span>
+                        <span class="table-column-cell">{{ link.row.modify_time }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="操作" header-align="center">
+                <el-table-column align="center" label="操作">
                     <template v-slot:default="link">
                         <el-button type="text" size="small" @click="handleEdit(link.row)">编辑</el-button>
                         <el-button type="text" size="small" @click="handleDelete(link.row)">删除</el-button>
@@ -55,15 +55,15 @@
         <el-dialog :visible.sync="dialogFormVisible" title="新增" width="420px" @closed="closeDialog">
             <el-form>
                 <el-form-item label="名 称">
-                    <el-input autocomplete="off" style="width: 300px;" v-model="content"></el-input>
+                    <el-input autocomplete="off" style="width: 300px;" v-model="url"></el-input>
                 </el-form-item>
                 <el-form-item label="主 人">
                     <el-input autocomplete="off" style="width: 300px;" v-model="owner"></el-input>
                 </el-form-item>
                 <el-form-item label="状 态">
                     <el-select v-model="status" style="width: 300px;">
-                        <el-option label="发布" value="publish"></el-option>
-                        <el-option label="待发布" value="draft"></el-option>
+                        <el-option label="发布" :value=true></el-option>
+                        <el-option label="待发布" :value=false></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描 述">
@@ -90,14 +90,14 @@ import { stringify } from "qs"
 export default {
     data() {
         return {
-            content: '',
+            url: '',
             page: 1,
             pageSize: 10,
             owner: '',
             description: '',
-            status: 'draft',
+            status: false,
             total: 0,
-            linkList: [],
+            link_list: [],
             loading: false,
             dialogFormVisible: false,
             delVisible: false,
@@ -114,10 +114,7 @@ export default {
         },
         submitDelete() {
             this.loading = true
-            let params = {
-                "id": this.delParams.id
-            }
-            this.$axios.delete(this.HOST + `/admin/api/delLink?${stringify(params)}`)
+            this.$axios.delete(this.HOST + `/admin/link/del/` + this.delParams.id)
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
@@ -135,8 +132,9 @@ export default {
             this.delParams = {}
         },
         handleEdit(params) {
+            console.log(params.id)
             this.id = params.id
-            this.content = params.content
+            this.url = params.url
             this.owner = params.owner
             this.status = params.status
             this.description = params.description
@@ -145,15 +143,16 @@ export default {
         submit() {
             let params = {
                 id: this.id,
-                content: this.content,
+                url: this.url,
                 owner: this.owner,
                 status: this.status,
                 description: this.description
             }
-            this.$axios.post(this.HOST + "/admin/api/addOrUpdateLink", {
+            if (!params.id || params.id === '0') {
+                this.$axios.post(this.HOST + "/admin/link/add", {
                 ...params
             }).then(response => {
-                if (response.data.code === 0) {
+                if (response.data.success) {
                     this.dialogFormVisible = false
                     this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
@@ -161,12 +160,26 @@ export default {
                     this.$message.warning(response.data.message)
                 }
             })
+            } else {
+                this.$axios.put(this.HOST + "/admin/link/update", {
+                ...params
+            }).then(response => {
+                if (response.data.success) {
+                    this.dialogFormVisible = false
+                    this.$message.success(response.data.message)
+                    this.handleCurrentPageChange(this.page)
+                } else {
+                    this.$message.warning(response.data.message)
+                }
+            })
+            }
+            
         },
         closeDialog() {
-            this.id = ''
-            this.content = ''
+            this.id = '0'
+            this.url = ''
             this.owner = ''
-            this.status = 'draft'
+            this.status = false
             this.description = ''
             this.dialogFormVisible = false
         },
@@ -176,12 +189,12 @@ export default {
                 "page": val,
                 "pageSize": this.pageSize
             }
-            this.$axios.get(this.HOST + `/admin/api/linkList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/link/list?${stringify(queryData)}`)
             .then(response => {
-                if (response.data.code === 0) {
-                    let resp = response.data.data
+                if (response.data.success) {
+                    let resp = response.data
                     this.total = resp.total
-                    this.linkList = resp.list,
+                    this.link_list = resp.data,
                     this.page = val
                 }
             }).finally( () => {

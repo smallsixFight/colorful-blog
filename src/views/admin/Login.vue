@@ -45,17 +45,16 @@
                         return false
                     
                     this.loading = true
-                    this.$axios.post(this.HOST + "/admin/api/login", {
+                    this.$axios.post(this.HOST + "/admin/login", {
                     ...this.loginForm
-                    }).then(response => {
-                        if (response.data.code === 0) {
-                            const resp = response.data.data
-                            sessionStorage.setItem("accessToken", resp.token)
-                            sessionStorage.setItem("ms_username", resp.ms_username)
-                            this.$message.success(response.data.message)
+                    }).then(resp => {
+                        if (resp.data.success) {
+                            sessionStorage.setItem("accessToken", resp.data.token)
+                            sessionStorage.setItem("ms_username", this.loginForm.username)
+                            this.$message.success(resp.data.message)
                             this.$router.replace('/admin');
                         } else {
-                            this.$message.error(response.data.message)
+                            this.$message.error(resp.data.message)
                         }
                     }).finally( () => {
                         this.loading = false
@@ -71,7 +70,7 @@
     position: relative;
     width:100%;
     height:100%;
-    background-image: url();
+    background-image: url(http://media.lamlake.com/blog_background.jpg);
     background-size: 100%;
 }
 .ms-title {

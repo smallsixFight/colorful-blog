@@ -4,37 +4,44 @@
             <span>评论管理</span>
         </el-card>
         <el-card>
-            <el-table :data="commentList" style="width: 100%;font-size:14px;">
-                <el-table-column label="评论者" width="100px" header-align="center" align="center">
+            <el-table :data="comment_list" style="width: 100%;font-size:14px;">
+                <el-table-column label="评论者" width="100px" align="center">
                     <template v-slot:default="comment">
-                        <span class="table-column-cell">{{ comment.row.author }}</span>
+                        <span class="table-column-cell">{{ comment.row.commentator }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="内容" width="500px" header-align="center" align="center">
+                <el-table-column label="内容" width="500px" align="center">
                     <template v-slot:default="comment">
                         <span class="table-column-cell">{{ comment.row.content }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="邮箱" header-align="center" align="center">
+                <el-table-column label="标题" align="center">
+                    <template v-slot:default="comment">
+                        <span class="table-column-cell" v-if="comment.row.content_id">{{ comment.row.content_title }}</span>
+                        <el-tag type="warning" v-else>已被删除</el-tag>
+                        
+                    </template>
+                </el-table-column>
+                <el-table-column label="邮箱" align="center">
                     <template v-slot:default="comment">
                         <span class="table-column-cell">{{ comment.row.mail }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="日期" header-align="center">
                     <template v-slot:default="comment">
-                        <span class="table-column-cell">{{ comment.row.created | unixTimeFormat }}</span>
+                        <span class="table-column-cell">{{ comment.row.create_time }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="状态" header-align="center">
                     <template v-slot:default="comment">
-                        <el-tag :type="comment.row.status === 1 ? '' : 'warning'">
-                            {{comment.row.status === 1 ? "通过" : "待审核"}}
+                        <el-tag :type="comment.row.status ? '' : 'warning'">
+                            {{comment.row.status ? "通过" : "待审核"}}
                         </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作" header-align="center">
                     <template v-slot:default="comment">
-                        <el-button type="text" size="small" v-if="comment.row.status !== 1" @click="handlePass(comment.row.coid)">通过</el-button>
+                        <el-button type="text" size="small" v-if="!comment.row.status" @click="handlePass(comment.row.id)">通过</el-button>
                         <el-button type="text" size="small" @click="handleDelete(comment.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -64,7 +71,7 @@ export default {
             page: 1,
             pageSize: 10,
             total: 0,
-            commentList: [],
+            comment_list: [],
             loading: false,
             delVisible: false,
             delParams: {}
@@ -74,10 +81,10 @@ export default {
         this.handleCurrentPageChange(1);
     },
     methods: {
-        handlePass(coid) {
+        handlePass(id) {
             this.loading = true
             let params = {
-                coid: coid
+                id: id
             }
             this.$axios.get(this.HOST + `/admin/api/passComment?${stringify(params)}`)
             .then(response => {
@@ -98,10 +105,7 @@ export default {
         },
         submitDelete() {
             this.loading = true
-            let params = {
-                "coid": this.delParams.coid
-            }
-            this.$axios.delete(this.HOST + `/admin/api/delComment?${stringify(params)}`)
+            this.$axios.delete(this.HOST + `/admin/comment/del/` + this.delParams.id)
             .then(response => {
                 if (response.data.code === 0) {
                     this.delVisible = false
@@ -125,12 +129,12 @@ export default {
                 "page": val,
                 "pageSize": this.pageSize
             }
-            this.$axios.get(this.HOST + `/admin/api/commentList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/comment/list?${stringify(queryData)}`)
             .then(response => {
-                if (response.data.code === 0) {
-                    let resp = response.data.data
+                if (response.data.success) {
+                    let resp = response.data
                     this.total = resp.total
-                    this.commentList = resp.list,
+                    this.comment_list = resp.data,
                     this.page = val
                 }
             }).finally( () => {
