@@ -7,7 +7,17 @@
             <el-card>
                 <div class="article-select">
                     <el-row :gutter="24">
-                        <el-col :span="6">
+                        <el-col :span="8">
+                            <el-form-item label="分类">
+                                <metaList type=2 :defalutVal='articleForm.category' v-on:change="handleCatoryChange" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="标签">
+                                <metaList type=1 :defalutVal='articleForm.tags' :multiple='true' v-on:change="handleTagsChange" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
                             <el-form-item label="开启评论">
                                 <el-select v-model="articleForm.allowComment" size="small">
                                     <el-option :key=1 :value='1' label="是"></el-option>
@@ -15,42 +25,13 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="6">
-                            <el-form-item label="分类目录">
-                                <el-select v-model="articleForm.category" size="small">
-                                    <el-option
-                                        v-for="item in categoryList"
-                                        :key="item.mid"
-                                        :label="item.name"
-                                        :value="item.mid">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item label="标签">
-                                <el-select size="small" v-model="articleForm.tags" multiple>
-                                    <el-option
-                                        v-for="item in tagList"
-                                        :key="item.mid"
-                                        :label="item.name"
-                                        :value="item.mid">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item>
-                                <el-input v-model="articleForm.slug" placeholder="自定义路径 例: example" size="small"></el-input>
-                            </el-form-item>
-                            </el-col>
                     </el-row>
                 </div>
                 <el-form-item prop='title'>
                     <el-input placeholder="输入文章标题" v-model="articleForm.title" class="article-title"></el-input>
                 </el-form-item>
                 <el-form-item prop="content">
-                    <mavon-editor v-model="articleForm.content" ref="md" @change="change" style="min-height: 600px;" />
+                    <markdownEdit :val='articleForm.content' v-on:change="handleContentChange"></markdownEdit>
                 </el-form-item>
                 <el-form-item>
                     <div style="float: right;">
@@ -58,13 +39,15 @@
                         <el-button class="editor-btn" size="small" type="primary" @click="submit('publish')">发布</el-button>
                     </div>
                 </el-form-item>
+                
             </el-card>
         </el-form>
     </div>
 </template>
 
 <script>
-import { mavonEditor } from 'mavon-editor';
+import markdownEdit from '../components/MarkdownEdit';
+import metaList from '../components/LookupMeta';
 import 'mavon-editor/dist/css/index.css';
 import { stringify } from 'qs'
 export default {
@@ -95,13 +78,23 @@ export default {
         }
     },
     components: {
-        mavonEditor
+        markdownEdit,
+        metaList
     },
     created: function() {
         const cid = this.$route.query.cid
         this.getInitalizeData(cid);
     },
     methods: {
+        handleContentChange(val) {
+            this.articleForm.content = val
+        },
+        handleCatoryChange(val) {
+            this.articleForm.category = val;
+        },
+        handleTagsChange(val) {
+            this.articleForm.tags = val;
+        },
         getInitalizeData(cid) {
             this.loading = true
             let params = {
@@ -138,11 +131,8 @@ export default {
                 this.loading = false
             })
         },
-        // render 为 markdown 解析后的 html 内容
-        change(value, render) {
-            this.html = render;
-        },
         submit(status) {
+            console.log(this.articleForm.tags)
             this.$refs['articleForm'].validate((valid) => {
                 if (!valid)
                     return false
