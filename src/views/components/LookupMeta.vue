@@ -14,7 +14,6 @@ export default {
     if (!this.typ) {
       return;
     }
-    console.log(this.typ);
     let queryData = {
       type: this.typ
     };

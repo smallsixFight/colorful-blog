@@ -9,12 +9,12 @@
                     <el-row :gutter="24">
                         <el-col :span="8">
                             <el-form-item label="分类">
-                                <metaList type=2 :defalutVal='articleForm.category' v-on:change="handleCatoryChange" />
+                                <metaList type=2 :defaultVal='articleForm.category' v-on:change="handleCatoryChange" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="标签">
-                                <metaList type=1 :defalutVal='articleForm.tags' :multiple='true' v-on:change="handleTagsChange" />
+                                <metaList type=1 :defaultVal='articleForm.tags' :multiple='true' v-on:change="handleTagsChange" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -49,7 +49,7 @@
 import markdownEdit from '../components/MarkdownEdit';
 import metaList from '../components/LookupMeta';
 import 'mavon-editor/dist/css/index.css';
-import { stringify } from 'qs'
+// import { stringify } from 'qs'
 export default {
     name: "articleEdit",
     data() {
@@ -59,8 +59,8 @@ export default {
                 content: '',
                 title: '',
                 allowComment: 1,
-                category: "",
-                tags: [],
+                category: '2',
+                tags: ['12'],
                 slug: ''
             },
             rules: {
@@ -82,8 +82,8 @@ export default {
         metaList
     },
     created: function() {
-        const cid = this.$route.query.cid
-        this.getInitalizeData(cid);
+        // const cid = this.$route.query.cid
+        // this.getInitalizeData(cid);
     },
     methods: {
         handleContentChange(val) {
@@ -94,42 +94,6 @@ export default {
         },
         handleTagsChange(val) {
             this.articleForm.tags = val;
-        },
-        getInitalizeData(cid) {
-            this.loading = true
-            let params = {
-                "cid": cid
-            }
-            this.$axios.get(this.HOST + `/admin/api/articleEditInitData?${stringify(params)}`)
-            .then(response => {
-                if (response.data.code === 0) {
-                    const resp = response.data.data
-                    this.categoryList = resp.categories
-                    this.tagList = resp.tags
-                    this.articleForm.category = resp.categories[0].mid
-                    if (resp.contents) {
-                        this.articleForm.cid = resp.contents.cid
-                        this.articleForm.category = parseInt(resp.contents.category)
-                        this.articleForm.title = resp.contents.title
-                        this.articleForm.content = resp.contents.content
-                        this.articleForm.allowComment = resp.contents.allowComment
-                        let tagsList = []
-                        if (resp.contents.tags && resp.contents.tags.length > 0 ) {
-                            let tags = resp.contents.tags.split(',')
-                            for (let i = 0; i < tags.length; i ++) {
-                                tagsList.push(parseInt(tags[i]))
-                            }
-                        }
-                        this.articleForm.tags = tagsList
-                        this.articleForm.slug = resp.contents.slug || ''
-                    }
-                    
-                } else {
-                    this.$message.warning(response.data.message)
-                }
-            }).finally( () => {
-                this.loading = false
-            })
         },
         submit(status) {
             console.log(this.articleForm.tags)
