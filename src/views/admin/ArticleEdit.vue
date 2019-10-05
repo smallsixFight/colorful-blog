@@ -50,7 +50,7 @@
         </el-form-item>
         <el-form-item>
           <div style="float: right;">
-            <el-button class="editor-btn" size="small" type="warning" @click="submit(0)">保存草稿</el-button>
+            <el-button class="editor-btn" size="small" type="warning" @click="submit(0)">存为草稿</el-button>
             <el-button class="editor-btn" size="small" type="primary" @click="submit(1)">发布</el-button>
           </div>
         </el-form-item>
@@ -94,7 +94,6 @@ export default {
         .then(resp => {
           if (resp.data.success) {
             this.articleForm = resp.data.data;
-            console.log(this.articleForm.article);
           } else {
             this.$message.warning(resp.data.message);
           }
@@ -134,7 +133,7 @@ export default {
       try {
         this.loading = true;
         let resp;
-        if (this.articleForm.article.id && this.articleForm.id !== "id") {
+        if (this.articleForm.article.id && this.articleForm.article.id !== '0') {
           delete this.articleForm.article.create_time;
           delete this.articleForm.article.modify_time;
           resp = await this.$axios.put(this.HOST + "/admin/article/update", {
