@@ -172,7 +172,7 @@
             size="small"
             style="width: 100%;font-size:16px;"
           >
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="240px">
               <template v-slot:default="log">
                 <span class="table-column-cell">{{ log.row.action }}</span>
               </template>
