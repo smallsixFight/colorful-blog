@@ -4,19 +4,16 @@
             <span>系统日志</span>
         </el-card>
         <el-card>
-            <el-table :data="logList" style="width: 100%;font-size:14px;">
-                <el-table-column prop="action" align="center" label="事件" header-align="center">
+            <el-table :data="log_list" style="width: 100%;font-size:14px;">
+                <el-table-column prop="action" align="center" label="事件">
                 </el-table-column>
-                <el-table-column prop="result" align="center" label="结果" header-align="center">
+                <el-table-column prop="result" align="center" label="结果">
                 </el-table-column>
-                <el-table-column prop="username" align="center" label="操作者" header-align="center">
+                <el-table-column prop="operator" align="center" label="操作者">
                 </el-table-column>
-                <el-table-column prop="ip" align="center" label="IP" header-align="center">
+                <el-table-column prop="ip" align="center" label="IP">
                 </el-table-column>
-                <el-table-column align="center" label="时间" header-align="center">
-                    <template v-slot:default="log">
-                        <span class="table-column-cell">{{ log.row.created | unixTimeFormat }}</span>
-                    </template>
+                <el-table-column prop='create_time' align="center" label="时间"> 
                 </el-table-column>
             </el-table>
             <el-pagination class="table-pagination"
@@ -35,9 +32,9 @@ export default {
     data() {
         return {
             page: 1,
-            pageSize: 10,
+            page_size: 10,
             loading: false,
-            logList: [],
+            log_list: [],
             total: 0
         }
     },
@@ -49,15 +46,15 @@ export default {
             this.loading = true
             let queryData = {
                 "page": val,
-                "pageSize": this.pageSize
+                "page_size": this.page_size
             }
-            this.$axios.get(this.HOST + `/admin/api/logList?${stringify(queryData)}`)
+            this.$axios.get(this.HOST + `/admin/sys/log/list?${stringify(queryData)}`)
             .then(response => {
-                if (response.data.code === 0) {
-                    let resp = response.data.data
-                    this.total = resp.total
-                    this.logList = resp.list,
-                    this.page = val
+                if (response.data.success) {
+                    let resp = response.data;
+                    this.total = resp.total;
+                    this.log_list = resp.data;
+                    this.page = val;
                 } else {
                     this.$message.warning(response.data.message)
                 }

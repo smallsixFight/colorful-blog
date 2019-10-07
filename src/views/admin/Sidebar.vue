@@ -103,11 +103,11 @@ export default {
           index: "linkList",
           title: "友链管理"
         },
-        // {
-        //     icon: 'el-icon-tickets',
-        //     index: 'logList',
-        //     title: '系统日志'
-        // },
+        {
+            icon: 'el-icon-tickets',
+            index: 'logList',
+            title: '系统日志'
+        },
         {
           icon: "el-icon-setting",
           index: "sysSetting",
