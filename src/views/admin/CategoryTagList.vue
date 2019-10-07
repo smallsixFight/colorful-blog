@@ -4,7 +4,7 @@
       <span>分类 / 标签</span>
     </el-card>
     <el-card>
-      <el-button type="primary" size="small" @click="dialogFormVisible = true">新增</el-button>
+      <el-button type="primary" size="small" @click="dialog_form_visible = true">新增</el-button>
       <el-table :data="category_tag_list" style="width: 100%;font-size:14px;">
         <el-table-column label="名称" header-align="center" align="center">
           <template v-slot:default="categor_tag">
@@ -53,7 +53,7 @@
         @current-change="handleCurrentPageChange"
       ></el-pagination>
     </el-card>
-    <el-dialog :visible.sync="dialogFormVisible" title="新增" width="420px" @closed="closeDialog">
+    <el-dialog :visible.sync="dialog_form_visible" title="新增" width="420px" @closed="closeDialog">
       <el-form>
         <el-form-item label="名称:">
           <el-input autocomplete="off" style="width: 300px;" v-model="name"></el-input>
@@ -73,7 +73,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog :visible.sync="delVisible" title="删除" width="20%" @closed="closeDelDialog">
+    <el-dialog :visible.sync="del_visible" title="删除" width="20%" @closed="closeDelDialog">
       <span>确定删除吗？</span>
       <span slot="footer">
         <el-button @click="closeDelDialog" size="small">取 消</el-button>
@@ -95,11 +95,11 @@ export default {
       loading: false,
       total: 0,
       category_tag_list: [],
-      dialogFormVisible: false,
-      delVisible: false,
-      delParams: {},
+      dialog_form_visible: false,
+      del_visible: false,
+      del_params: {},
       page: 1,
-      pageSize: 10
+      page_size: 10
     };
   },
   created: function() {
@@ -110,10 +110,10 @@ export default {
     submitDelete() {
       this.loading = true;
       this.$axios
-        .delete(this.HOST + `/admin/category_tag/del/` + this.delParams.id)
+        .delete(this.HOST + `/admin/category_tag/del/` + this.del_params.id)
         .then(response => {
           if (response.data.success) {
-            this.delVisible = false;
+            this.del_visible = false;
             this.$message.success(response.data.message);
             this.handleCurrentPageChange(this.page);
           } else {
@@ -125,16 +125,16 @@ export default {
         });
     },
     closeDelDialog() {
-      this.delVisible = false;
-      this.delParams = {};
+      this.del_visible = false;
+      this.del_params = {};
     },
     handleDelete(params) {
-      this.delVisible = true;
-      this.delParams = params;
+      this.del_visible = true;
+      this.del_params = params;
     },
     handleEdit(params) {
       this.id = params.id;
-      this.dialogFormVisible = true;
+      this.dialog_form_visible = true;
       this.name = params.name;
       this.type = params.type;
       this.description = params.description;
@@ -142,7 +142,7 @@ export default {
     handleCurrentPageChange: function(val) {
       let queryData = {
         page: val,
-        pageSize: this.pageSize
+        page_size: this.page_size
       };
       this.$axios
         .get(this.HOST + `/admin/category_tag/list?${stringify(queryData)}`)
@@ -173,7 +173,7 @@ export default {
             ...params
         }).then(response => {
             if (response.data.success) {
-              this.dialogFormVisible = false;
+              this.dialog_form_visible = false;
               this.$message.success(response.data.message);
               this.handleCurrentPageChange(this.page);
             } else {
@@ -187,7 +187,7 @@ export default {
             ...params
         }).then(response => {
             if (response.data.success) {
-              this.dialogFormVisible = false;
+              this.dialog_form_visible = false;
               this.$message.success(response.data.message);
               this.handleCurrentPageChange(this.page);
             } else {
@@ -199,7 +199,7 @@ export default {
       }
     },
     closeDialog() {
-      this.dialogFormVisible = false;
+      this.dialog_form_visible = false;
       this.id = "0";
       this.name = "";
       this.type = 2;

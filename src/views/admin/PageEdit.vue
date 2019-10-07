@@ -1,17 +1,17 @@
 <template>
   <div v-loading="loading">
-    <el-form :model="pageForm">
+    <el-form :model="page_form">
       <el-card class="page-header">
         <span>自定义页面编辑</span>
       </el-card>
       <el-card>
         <el-form-item prop="title">
-          <el-input placeholder="输入标题" v-model="pageForm.title" class="page-title"></el-input>
+          <el-input placeholder="输入标题" v-model="page_form.title" class="page-title"></el-input>
         </el-form-item>
         <el-form-item prop="content">
           <markdownEdit
-            :key="pageForm.id"
-            :val="pageForm.content"
+            :key="page_form.id"
+            :val="page_form.content"
             v-on:change="handleContentChange"
           ></markdownEdit>
         </el-form-item>
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       loading: false,
-      pageForm: {
+      page_form: {
         content: "",
         title: "",
       },
@@ -50,7 +50,7 @@ export default {
         .get(this.HOST + "/admin/custom/page/info/" + id)
         .then(resp => {
           if (resp.data.success) {
-            this.pageForm = resp.data.data;
+            this.page_form = resp.data.data;
           } else {
             this.$message.warning(resp.data.message);
           }
@@ -62,31 +62,31 @@ export default {
   },
   methods: {
       handleContentChange(val) {
-      this.pageForm.content = val;
+      this.page_form.content = val;
     },
     async submit(status) {
-    if (this.pageForm.title.trim() === "") {
+    if (this.page_form.title.trim() === "") {
         this.$message.warning("请输入标题");
         return;
       }
-      if (this.pageForm.content.trim() === "") {
+      if (this.page_form.content.trim() === "") {
         this.$message.warning("请输入内容");
         return;
       }
 
-      this.pageForm.status = status;
+      this.page_form.status = status;
       try {
         this.loading = true;
         let resp;
-        if (this.pageForm.id && this.pageForm.id !== '0') {
-          delete this.pageForm.create_time;
-          delete this.pageForm.modify_time;
+        if (this.page_form.id && this.page_form.id !== '0') {
+          delete this.page_form.create_time;
+          delete this.page_form.modify_time;
           resp = await this.$axios.put(this.HOST + "/admin/custom/page/update", {
-            ...this.pageForm
+            ...this.page_form
           });
         } else {
           resp = await this.$axios.post(this.HOST + "/admin/custom/page/add", {
-            ...this.pageForm
+            ...this.page_form
           });
         }
         if (resp.data.success) {

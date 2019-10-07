@@ -4,7 +4,7 @@
             <span>自定义页面</span>
         </el-card>
         <el-card>
-            <el-table :data="pageList" style="width: 100%;font-size:16px;">
+            <el-table :data="page_list" style="width: 100%;font-size:16px;">
                 <el-table-column align="center" label="标题" width="400px">
                     <template v-slot:default="page">
                         <span class="table-column-cell">{{ page.row.title }}</span>
@@ -35,7 +35,7 @@
                 @current-change="handleCurrentPageChange">
             </el-pagination>
         </el-card>
-        <el-dialog :visible.sync="delVisible" title="删除" width="20%" @closed="closeDelDialog">
+        <el-dialog :visible.sync="del_visible" title="删除" width="20%" @closed="closeDelDialog">
             <span>确定删除吗？</span>
             <span slot="footer">
                 <el-button @click="closeDelDialog" size="small">取 消</el-button>
@@ -51,11 +51,11 @@ export default {
     data() {
         return {
             page: 1,
-            pageSize: 10,
-            delVisible: false,
-            delParams: {},
+            page_size: 10,
+            del_visible: false,
+            del_params: {},
             total: 0,
-            pageList: [],
+            page_list: [],
             loading: false
         }
     }, 
@@ -64,15 +64,15 @@ export default {
     },
     methods: {
         handleDelete(params) {
-            this.delVisible = true
-            this.delParams = params
+            this.del_visible = true
+            this.del_params = params
         },
         submitDelete() {
             this.loading = true
-            this.$axios.delete(this.HOST + `/admin/custom/page/del/` + this.delParams.id)
+            this.$axios.delete(this.HOST + `/admin/custom/page/del/` + this.del_params.id)
             .then(response => {
                 if (response.data.code === 0) {
-                    this.delVisible = false
+                    this.del_visible = false
                     this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
                 } else {
@@ -83,8 +83,8 @@ export default {
             })
         },
         closeDelDialog() {
-            this.delVisible = false
-            this.delParams = {}
+            this.del_visible = false
+            this.del_params = {}
         },
         handleEdit(id) {
             this.$router.push({path: '/admin/pageEdit', query: { id: id}})
@@ -93,14 +93,14 @@ export default {
             this.loading = true
             let queryData = {
                 "page": val,
-                "pageSize": this.pageSize
+                "page_size": this.page_size
             }
             this.$axios.get(this.HOST + `/admin/custom/page/list?${stringify(queryData)}`)
             .then(response => {
                 if (response.data.success) {
                     let resp = response.data
                     this.total = resp.total
-                    this.pageList = resp.data,
+                    this.page_list = resp.data,
                     this.page = val
                 } else {
                     this.$message.warning(response.data.message)

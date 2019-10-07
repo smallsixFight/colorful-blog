@@ -4,7 +4,7 @@
             <span>友链管理</span>
         </el-card>
         <el-card>
-            <el-button type="primary" size="small" @click="dialogFormVisible = true">新增</el-button>
+            <el-button type="primary" size="small" @click="dialog_form_visible = true">新增</el-button>
             <el-table :data="link_list" style="width: 100%;font-size:14px;">
                 <el-table-column label="URL" align="center">
                     <template v-slot:default="link">
@@ -52,7 +52,7 @@
                 @current-change="handleCurrentPageChange">
             </el-pagination>
         </el-card>
-        <el-dialog :visible.sync="dialogFormVisible" title="新增" width="420px" @closed="closeDialog">
+        <el-dialog :visible.sync="dialog_form_visible" title="新增" width="420px" @closed="closeDialog">
             <el-form>
                 <el-form-item label="名 称">
                     <el-input autocomplete="off" style="width: 300px;" v-model="url"></el-input>
@@ -75,7 +75,7 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-        <el-dialog :visible.sync="delVisible" title="删除" width="20%" @closed="closeDelDialog">
+        <el-dialog :visible.sync="del_visible" title="删除" width="20%" @closed="closeDelDialog">
             <span>确定删除吗？</span>
             <span slot="footer">
                 <el-button @click="closeDelDialog" size="small">取 消</el-button>
@@ -92,16 +92,16 @@ export default {
         return {
             url: '',
             page: 1,
-            pageSize: 10,
+            page_size: 10,
             owner: '',
             description: '',
             status: false,
             total: 0,
             link_list: [],
             loading: false,
-            dialogFormVisible: false,
-            delVisible: false,
-            delParams: {}
+            dialog_form_visible: false,
+            del_visible: false,
+            del_params: {}
         }
     },
     created: function() {
@@ -109,15 +109,15 @@ export default {
     },
     methods: {
         handleDelete(params) {
-            this.delVisible = true
-            this.delParams = params
+            this.del_visible = true
+            this.del_params = params
         },
         submitDelete() {
             this.loading = true
-            this.$axios.delete(this.HOST + `/admin/link/del/` + this.delParams.id)
+            this.$axios.delete(this.HOST + `/admin/link/del/` + this.del_params.id)
             .then(response => {
                 if (response.data.code === 0) {
-                    this.delVisible = false
+                    this.del_visible = false
                     this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
                 } else {
@@ -128,17 +128,16 @@ export default {
             })
         },
         closeDelDialog() {
-            this.delVisible = false
-            this.delParams = {}
+            this.del_visible = false
+            this.del_params = {}
         },
         handleEdit(params) {
-            console.log(params.id)
             this.id = params.id
             this.url = params.url
             this.owner = params.owner
             this.status = params.status
             this.description = params.description
-            this.dialogFormVisible = true
+            this.dialog_form_visible = true
         },
         submit() {
             let params = {
@@ -153,7 +152,7 @@ export default {
                 ...params
             }).then(response => {
                 if (response.data.success) {
-                    this.dialogFormVisible = false
+                    this.dialog_form_visible = false
                     this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
                 } else {
@@ -165,7 +164,7 @@ export default {
                 ...params
             }).then(response => {
                 if (response.data.success) {
-                    this.dialogFormVisible = false
+                    this.dialog_form_visible = false
                     this.$message.success(response.data.message)
                     this.handleCurrentPageChange(this.page)
                 } else {
@@ -181,13 +180,13 @@ export default {
             this.owner = ''
             this.status = false
             this.description = ''
-            this.dialogFormVisible = false
+            this.dialog_form_visible = false
         },
         handleCurrentPageChange: function(val) {
             this.loading = true
             let queryData = {
                 "page": val,
-                "pageSize": this.pageSize
+                "page_size": this.page_size
             }
             this.$axios.get(this.HOST + `/admin/link/list?${stringify(queryData)}`)
             .then(response => {

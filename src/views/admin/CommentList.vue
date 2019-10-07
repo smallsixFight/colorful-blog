@@ -53,7 +53,7 @@
                 @current-change="handleCurrentPageChange">
             </el-pagination>
         </el-card>
-        <el-dialog :visible.sync="delVisible" title="删除" width="20%" @closed="closeDelDialog">
+        <el-dialog :visible.sync="del_visible" title="删除" width="20%" @closed="closeDelDialog">
             <span>确定删除吗？</span>
             <span slot="footer">
                 <el-button @click="closeDelDialog" size="small">取 消</el-button>
@@ -69,12 +69,12 @@ export default {
     data() {
         return {
             page: 1,
-            pageSize: 10,
+            page_size: 10,
             total: 0,
             comment_list: [],
             loading: false,
-            delVisible: false,
-            delParams: {}
+            del_visible: false,
+            del_params: {}
         }
     },
     created: function() {
@@ -89,7 +89,7 @@ export default {
             this.$axios.get(this.HOST + `/admin/api/passComment?${stringify(params)}`)
             .then(response => {
                 if (response.data.code === 0) {
-                    this.delVisible = false
+                    this.del_visible = false
                     this.handleCurrentPageChange(this.page)
                     this.$message.success(response.data.message)
                 } else {
@@ -100,34 +100,34 @@ export default {
             })
         },
         handleDelete(params) {
-            this.delVisible = true
-            this.delParams = params
+            this.del_visible = true
+            this.del_params = params
         },
         submitDelete() {
             this.loading = true
-            this.$axios.delete(this.HOST + `/admin/comment/del/` + this.delParams.id)
+            this.$axios.delete(this.HOST + `/admin/comment/del/` + this.del_params.id)
             .then(response => {
                 if (response.data.code === 0) {
-                    this.delVisible = false
+                    this.del_visible = false
                     this.handleCurrentPageChange(this.page)
                     this.$message.success(response.data.message)
                 } else {
                     this.$message.warning(response.data.message)
-                    this.delVisible = false
+                    this.del_visible = false
                 }
             }).finally( () => {
                 this.loading = false
             })
         },
         closeDelDialog() {
-            this.delVisible = false
-            this.delParams = {}
+            this.del_visible = false
+            this.del_params = {}
         },
         handleCurrentPageChange: function(val) {
             this.loading = true
             let queryData = {
                 "page": val,
-                "pageSize": this.pageSize
+                "page_size": this.page_size
             }
             this.$axios.get(this.HOST + `/admin/comment/list?${stringify(queryData)}`)
             .then(response => {

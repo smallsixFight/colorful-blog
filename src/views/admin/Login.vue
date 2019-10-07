@@ -2,13 +2,13 @@
     <div class="login-wrap">
         <div class="ms-login">
             <div class="ms-title">Colorful</div>
-            <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">
+            <el-form :model="login_form" :rules="rules" ref="login_form" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
-                    <el-input v-model="loginForm.username" placeholder="account">
+                    <el-input v-model="login_form.username" placeholder="account">
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="loginForm.password" @keyup.enter.native="logging('loginForm')">
+                    <el-input type="password" placeholder="password" v-model="login_form.password" @keyup.enter.native="logging('login_form')">
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
@@ -24,7 +24,7 @@
         data: function(){
             return {
                 loading: false,
-                loginForm: {
+                login_form: {
                     username: '',
                     password: ''
                 },
@@ -40,17 +40,17 @@
         },
         methods: {
             logging() {
-                this.$refs['loginForm'].validate((valid) => {
+                this.$refs['login_form'].validate((valid) => {
                     if (!valid)
                         return false
                     
                     this.loading = true
                     this.$axios.post(this.HOST + "/admin/login", {
-                    ...this.loginForm
+                    ...this.login_form
                     }).then(resp => {
                         if (resp.data.success) {
                             sessionStorage.setItem("accessToken", resp.data.token)
-                            sessionStorage.setItem("ms_username", this.loginForm.username)
+                            sessionStorage.setItem("ms_username", this.login_form.username)
                             this.$message.success(resp.data.message)
                             this.$router.replace('/admin');
                         } else {

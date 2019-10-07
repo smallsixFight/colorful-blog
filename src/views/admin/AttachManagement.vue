@@ -95,7 +95,7 @@ export default {
       uploadFrame_visible: false,
       attachment_list: [],
       page: 1,
-      pageSize: 10,
+      page_size: 10,
       total: 0,
       del_visible: false,
       delId: null,
@@ -205,7 +205,7 @@ export default {
           if (response.data.success) {
             this.$message.success(response.data.message);
             const p = this.page - 1;
-            if (this.page * this.pageSize + 1 >= this.total) {
+            if (this.page * this.page_size + 1 >= this.total) {
               this.page = p;
             }
             this.handleCurrentPageChange(this.page);
@@ -242,7 +242,7 @@ export default {
       this.loading = true;
       let queryData = {
         page: val,
-        pageSize: this.pageSize
+        page_size: this.page_size
       };
       this.$axios
         .get(this.HOST + `/admin/attach/list?${stringify(queryData)}`)

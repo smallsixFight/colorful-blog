@@ -21,7 +21,6 @@ export default {
   name: 'home',
   data() {
     return {
-      tagsList: [],
       collapse: false
     }
   },
