@@ -24,7 +24,6 @@
         accept=".jpg, .jpeg, .png"
         :http-request="upload"
         action
-        :before-upload="beforeUpload"
         multiple
       >
         <i class="el-icon-upload"></i>
@@ -259,12 +258,12 @@ export default {
           this.loading = false;
         });
     },
-    beforeUpload(file) {
-      if (file.size / 1024 / 1024 > 2) {
-        this.$message.warning("上传文件大小不能大于 2 M！");
-        return false;
-      }
-    },
+    // beforeUpload(file) {
+    //   if (file.size / 1024 / 1024 > 10) {
+    //     this.$message.warning("上传文件大小不能大于 10 M！");
+    //     return false;
+    //   }
+    // },
     changeUploadFrameVisible() {
       this.uploadFrame_visible = !this.uploadFrame_visible;
     }
