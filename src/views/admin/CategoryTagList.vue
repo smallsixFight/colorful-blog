@@ -59,9 +59,9 @@
           <el-input autocomplete="off" style="width: 300px;" v-model="name"></el-input>
         </el-form-item>
         <el-form-item label="类型:">
-          <el-select v-model.number='type' style="width: 300px;">
-            <el-option label="分类" :value=2></el-option>
-            <el-option label="标签" :value=1></el-option>
+          <el-select v-model.number="type" style="width: 300px;">
+            <el-option label="分类" :value="2"></el-option>
+            <el-option label="标签" :value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="描述:">
@@ -166,12 +166,14 @@ export default {
         id: this.id,
         name: this.name,
         type: this.type,
-        description: this.description,
+        description: this.description
       };
-      if (params.id === '0') {
-          this.$axios.post(this.HOST + "/admin/category_tag/add", {
+      if (params.id === "0") {
+        this.$axios
+          .post(this.HOST + "/admin/category_tag/add", {
             ...params
-        }).then(response => {
+          })
+          .then(response => {
             if (response.data.success) {
               this.dialog_form_visible = false;
               this.$message.success(response.data.message);
@@ -179,13 +181,16 @@ export default {
             } else {
               this.$message.warning(response.data.message);
             }
-        }).finally(() => {
+          })
+          .finally(() => {
             this.loading = false;
-        });
+          });
       } else {
-        this.$axios.put(this.HOST + "/admin/category_tag/update", {
+        this.$axios
+          .put(this.HOST + "/admin/category_tag/update", {
             ...params
-        }).then(response => {
+          })
+          .then(response => {
             if (response.data.success) {
               this.dialog_form_visible = false;
               this.$message.success(response.data.message);
@@ -193,9 +198,10 @@ export default {
             } else {
               this.$message.warning(response.data.message);
             }
-        }).finally(() => {
+          })
+          .finally(() => {
             this.loading = false;
-        });
+          });
       }
     },
     closeDialog() {

@@ -13,41 +13,40 @@
 </template>
 
 <script>
-import vHead from './Header.vue';
-import bus from '@/bus';
-import vSidebar from './Sidebar.vue';
+import vHead from "./Header.vue";
+import bus from "@/bus";
+import vSidebar from "./Sidebar.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   data() {
     return {
       collapse: false
-    }
+    };
   },
   components: {
-    vHead, 
+    vHead,
     vSidebar
   },
   created() {
-    bus.$on('collapse', msg => {
+    bus.$on("collapse", msg => {
       this.collapse = msg;
-    })
-
+    });
   }
-}
+};
 </script>
 
 <style>
 .content::-webkit-scrollbar {
-    width:8px;
-    height:8px;
+  width: 8px;
+  height: 8px;
 }
 .content::-webkit-scrollbar-thumb {
-    height:40px;
-    background-color:#aaa; 
-    border-radius: 16px;
+  height: 40px;
+  background-color: #aaa;
+  border-radius: 16px;
 }
 .content::-webkit-scrollbar-thumb:hover {
-    background-color:#bbb;
+  background-color: #bbb;
 }
 </style>

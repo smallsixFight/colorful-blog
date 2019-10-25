@@ -109,9 +109,9 @@ export default {
           title: "友链管理"
         },
         {
-            icon: 'el-icon-notebook-1',
-            index: 'logList',
-            title: '系统日志'
+          icon: "el-icon-notebook-1",
+          index: "logList",
+          title: "系统日志"
         },
         {
           icon: "el-icon-setting",

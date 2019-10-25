@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-select v-model="value" size="small" :multiple="is_multiple" @change='handleChange'>
+    <el-select v-model="value" size="small" :multiple="is_multiple" @change="handleChange">
       <el-option v-for="item in meta_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
     </el-select>
   </div>
 </template>
 <script>
-import { stringify } from 'qs';
+import { stringify } from "qs";
 export default {
   name: "metaList",
-  props: ["type", "defaultVal", 'multiple'],
+  props: ["type", "defaultVal", "multiple"],
   created: function() {
     if (!this.typ) {
       return;
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     handleChange() {
-      this.$emit('change', this.value);
+      this.$emit("change", this.value);
     }
   }
 };

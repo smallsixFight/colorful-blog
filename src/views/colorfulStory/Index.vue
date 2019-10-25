@@ -33,12 +33,11 @@ export default {
 }
 .index::before {
     /* position: relative; */
-    background-image: url();
     content: '';
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: #d2f0f4;
+    background-image: url('../../assets/img/bk.png');
     background-size: cover;
-    opacity: 0.15;
+    opacity: 0.5;
     position: fixed;
     width: 100%;
     height: 100%;

@@ -48,12 +48,7 @@
           <div slot="header" class="clearfix">
             <span>最近文章</span>
           </div>
-          <el-table
-            :data="article_list"
-            size="small"
-            
-            style="width: 100%;font-size:16px;"
-          >
+          <el-table :data="article_list" size="small" style="width: 100%;font-size:16px;">
             <el-table-column label="标题">
               <template v-slot:default="article">
                 <span class="table-column-cell">{{ article.row.title }}</span>
@@ -84,12 +79,8 @@
           <div slot="header" class="clearfix">
             <span>最新评论</span>
           </div>
-          <el-table
-            :data="comment_list"
-            size="small"
-            style="width: 100%;font-size:16px;"
-          >
-          <el-table-column label="文章" align="left">
+          <el-table :data="comment_list" size="small" style="width: 100%;font-size:16px;">
+            <el-table-column label="文章" align="left">
               <template v-slot:default="comment">
                 <span class="table-column-cell">{{ comment.row.content_title }}</span>
               </template>
@@ -126,12 +117,7 @@
           <div slot="header" class="clearfix">
             <span>最近友链</span>
           </div>
-          <el-table
-            :data="link_list"
-            size="small"
-            height="440"
-            style="width: 100%;font-size:16px;"
-          >
+          <el-table :data="link_list" size="small" height="440" style="width: 100%;font-size:16px;">
             <el-table-column label="链接" align="center">
               <template v-slot:default="link">
                 <span class="table-column-cell">{{ link.row.url }}</span>
@@ -167,11 +153,7 @@
           <div slot="header" class="clearfix">
             <span>最近日志</span>
           </div>
-          <el-table
-            :data="log_list"
-            size="small"
-            style="width: 100%;font-size:16px;"
-          >
+          <el-table :data="log_list" size="small" style="width: 100%;font-size:16px;">
             <el-table-column label="操作" width="240px">
               <template v-slot:default="log">
                 <span class="table-column-cell">{{ log.row.action }}</span>
@@ -228,10 +210,10 @@ export default {
           this.link_list = resp.link_list;
           this.log_list = resp.log_list;
           this.statistics = {
-              article_num: resp.article_num,
-              comment_num: resp.comment_num,
-              link_num: resp.link_num,
-              log_num: resp.log_num,
+            article_num: resp.article_num,
+            comment_num: resp.comment_num,
+            link_num: resp.link_num,
+            log_num: resp.log_num
           };
         } else {
           this.$message.error(response.data.message);

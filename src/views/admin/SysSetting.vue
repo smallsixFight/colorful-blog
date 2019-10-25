@@ -90,13 +90,28 @@
         <el-tab-pane label="密码设置" name="pwd_setting">
           <el-form :model="pwd_setting" label-width="80px" style="width: 40%; margin-top: 20px;">
             <el-form-item label="旧密码">
-              <el-input placeholder="请输入旧密码" type="password" size="small" v-model="pwd_setting.old_pwd"></el-input>
+              <el-input
+                placeholder="请输入旧密码"
+                type="password"
+                size="small"
+                v-model="pwd_setting.old_pwd"
+              ></el-input>
             </el-form-item>
             <el-form-item label="新密码">
-              <el-input placeholder="请输入新密码" type="password" size="small" v-model="pwd_setting.new_pwd"></el-input>
+              <el-input
+                placeholder="请输入新密码"
+                type="password"
+                size="small"
+                v-model="pwd_setting.new_pwd"
+              ></el-input>
             </el-form-item>
             <el-form-item label="重复密码">
-              <el-input placeholder="请再次输入新密码" type="password" size="small" v-model="pwd_setting.confirm_pwd"></el-input>
+              <el-input
+                placeholder="请再次输入新密码"
+                type="password"
+                size="small"
+                v-model="pwd_setting.confirm_pwd"
+              ></el-input>
             </el-form-item>
             <el-form-item>
               <el-button size="small" type="primary" @click="updatePwd" :loading="loading">保存</el-button>
@@ -230,23 +245,29 @@ export default {
     },
 
     updatePwd() {
-      if (this.pwd_setting.old_pwd.trim() === '') {
-        this.$message.warning('请输入旧密码')
-        return
+      if (this.pwd_setting.old_pwd.trim() === "") {
+        this.$message.warning("请输入旧密码");
+        return;
       }
-      if (this.pwd_setting.new_pwd.trim() === '' || this.pwd_setting.confirm_pwd.trim() === '') {
-        this.$message.warning('请输入新密码/重复密码')
-        return
+      if (
+        this.pwd_setting.new_pwd.trim() === "" ||
+        this.pwd_setting.confirm_pwd.trim() === ""
+      ) {
+        this.$message.warning("请输入新密码/重复密码");
+        return;
       }
-      if (this.pwd_setting.new_pwd.trim() !== this.pwd_setting.confirm_pwd.trim()) {
-        this.$message.warning('两次密码输入不一致')
-        return
+      if (
+        this.pwd_setting.new_pwd.trim() !== this.pwd_setting.confirm_pwd.trim()
+      ) {
+        this.$message.warning("两次密码输入不一致");
+        return;
       }
       this.loading = true;
-      this.$axios.post(this.HOST + `/admin/user/pwd/update`, {
-        ...this.pwd_setting,
-      })
-      .then(response => {
+      this.$axios
+        .post(this.HOST + `/admin/user/pwd/update`, {
+          ...this.pwd_setting
+        })
+        .then(response => {
           if (response.data.success) {
             this.$message.success(response.data.message);
             this.handleTagClick();

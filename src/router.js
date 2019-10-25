@@ -17,7 +17,7 @@ export default new Router({
     {
       path: '/',
       component: Index,
-      meta: { 
+      meta: {
         title: 'Colorful',
         requireAuth: false
       },
@@ -76,7 +76,7 @@ export default new Router({
         {
           path: '/admin/dashboard',
           component: () => import('./views/admin/Dashboard.vue'),
-          meta: { 
+          meta: {
             title: '仪表盘 - Colorful',
             requireAuth: true
           }
@@ -84,7 +84,7 @@ export default new Router({
         {
           path: '/admin/articleList',
           component: () => import('./views/admin/ArticleList.vue'),
-          meta: { 
+          meta: {
             title: '我的文章 - Colorful',
             requireAuth: true
           }
@@ -92,7 +92,7 @@ export default new Router({
         {
           path: '/admin/articleEdit',
           component: () => import('./views/admin/ArticleEdit.vue'),
-          meta: { 
+          meta: {
             title: '文章编辑 - Colorful',
             requireAuth: true
           }
@@ -100,7 +100,7 @@ export default new Router({
         {
           path: '/admin/pageList',
           component: () => import('./views/admin/PageList.vue'),
-          meta: { 
+          meta: {
             title: '自定义页面 - Colorful',
             requireAuth: true
           }
@@ -108,7 +108,7 @@ export default new Router({
         {
           path: '/admin/pageEdit',
           component: () => import('./views/admin/PageEdit.vue'),
-          meta: { 
+          meta: {
             title: '页面编辑 - Colorful',
             requireAuth: true
           }
@@ -116,7 +116,7 @@ export default new Router({
         {
           path: '/admin/commentList',
           component: () => import('./views/admin/CommentList.vue'),
-          meta: { 
+          meta: {
             title: '评论管理 - Colorful',
             requireAuth: true
           }
@@ -124,7 +124,7 @@ export default new Router({
         {
           path: '/admin/categoryTagList',
           component: () => import('./views/admin/CategoryTagList.vue'),
-          meta: { 
+          meta: {
             title: '分类 / 标签 - Colorful',
             requireAuth: true
           }
@@ -132,7 +132,7 @@ export default new Router({
         {
           path: '/admin/linkList',
           component: () => import('./views/admin/LinkList.vue'),
-          meta: { 
+          meta: {
             title: '友链管理 - Colorful',
             requireAuth: true
           }
@@ -140,7 +140,7 @@ export default new Router({
         {
           path: '/admin/bookList',
           component: () => import('./views/admin/BookList.vue'),
-          meta: { 
+          meta: {
             title: '书籍管理 - Colorful',
             requireAuth: true
           }
@@ -148,7 +148,7 @@ export default new Router({
         {
           path: '/admin/attachManagement',
           component: () => import('./views/admin/AttachManagement.vue'),
-          meta: { 
+          meta: {
             title: '七牛云存储管理 - Colorful',
             requireAuth: true
           }
@@ -156,7 +156,7 @@ export default new Router({
         {
           path: '/admin/sysSetting',
           component: () => import('./views/admin/SysSetting.vue'),
-          meta: { 
+          meta: {
             title: '系统设置 - Colorful',
             requireAuth: true
           }
@@ -164,7 +164,7 @@ export default new Router({
         {
           path: '/admin/logList',
           component: () => import('./views/admin/LogList.vue'),
-          meta: { 
+          meta: {
             title: '系统日志 - Colorful',
             requireAuth: true
           }
@@ -174,7 +174,7 @@ export default new Router({
     {
       path: '/admin/404',
       component: () => import('./views/admin/404.vue'),
-      meta: { 
+      meta: {
         title: '404',
         requireAuth: false
       }

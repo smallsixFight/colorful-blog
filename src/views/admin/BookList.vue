@@ -159,7 +159,7 @@ export default {
       del_info: null,
       edit_visible: false,
       del_visible: false,
-      timeOutEvent: null,
+      timeOutEvent: null
     };
   },
   methods: {

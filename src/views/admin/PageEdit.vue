@@ -35,12 +35,12 @@ export default {
       loading: false,
       page_form: {
         content: "",
-        title: "",
-      },
+        title: ""
+      }
     };
   },
   components: {
-    markdownEdit,
+    markdownEdit
   },
   created: function() {
     const id = this.$route.query.id;
@@ -61,11 +61,11 @@ export default {
     }
   },
   methods: {
-      handleContentChange(val) {
+    handleContentChange(val) {
       this.page_form.content = val;
     },
     async submit(status) {
-    if (this.page_form.title.trim() === "") {
+      if (this.page_form.title.trim() === "") {
         this.$message.warning("请输入标题");
         return;
       }
@@ -78,12 +78,15 @@ export default {
       try {
         this.loading = true;
         let resp;
-        if (this.page_form.id && this.page_form.id !== '0') {
+        if (this.page_form.id && this.page_form.id !== "0") {
           delete this.page_form.create_time;
           delete this.page_form.modify_time;
-          resp = await this.$axios.put(this.HOST + "/admin/custom/page/update", {
-            ...this.page_form
-          });
+          resp = await this.$axios.put(
+            this.HOST + "/admin/custom/page/update",
+            {
+              ...this.page_form
+            }
+          );
         } else {
           resp = await this.$axios.post(this.HOST + "/admin/custom/page/add", {
             ...this.page_form
@@ -98,7 +101,7 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
+    }
   }
 };
 </script>

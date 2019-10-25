@@ -75,7 +75,7 @@ export default {
         },
         category: "",
         tag_list: []
-      },
+      }
     };
   },
   components: {
@@ -130,7 +130,10 @@ export default {
       try {
         this.loading = true;
         let resp;
-        if (this.article_form.article.id && this.article_form.article.id !== '0') {
+        if (
+          this.article_form.article.id &&
+          this.article_form.article.id !== "0"
+        ) {
           delete this.article_form.article.create_time;
           delete this.article_form.article.modify_time;
           resp = await this.$axios.put(this.HOST + "/admin/article/update", {
