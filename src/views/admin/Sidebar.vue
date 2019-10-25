@@ -49,7 +49,7 @@ export default {
       collapse: false,
       items: [
         {
-          icon: "el-icon-menu",
+          icon: "el-icon-data-analysis",
           index: "dashboard",
           title: "仪表盘"
         },
@@ -84,14 +84,19 @@ export default {
           ]
         },
         {
-          icon: "el-icon-message",
+          icon: "el-icon-chat-square",
           index: "commentList",
           title: "评论管理"
         },
         {
-          icon: "el-icon-edit",
+          icon: "el-icon-collection-tag",
           index: "categoryTagList",
           title: "分类 / 标签"
+        },
+        {
+          icon: "el-icon-reading",
+          index: "bookList",
+          title: "书籍管理"
         },
         {
           icon: "el-icon-upload",
@@ -99,12 +104,12 @@ export default {
           title: "七牛云存储"
         },
         {
-          icon: "el-icon-share",
+          icon: "el-icon-link",
           index: "linkList",
           title: "友链管理"
         },
         {
-            icon: 'el-icon-tickets',
+            icon: 'el-icon-notebook-1',
             index: 'logList',
             title: '系统日志'
         },

@@ -138,6 +138,14 @@ export default new Router({
           }
         },
         {
+          path: '/admin/bookList',
+          component: () => import('./views/admin/BookList.vue'),
+          meta: { 
+            title: '书籍管理 - Colorful',
+            requireAuth: true
+          }
+        },
+        {
           path: '/admin/attachManagement',
           component: () => import('./views/admin/AttachManagement.vue'),
           meta: { 

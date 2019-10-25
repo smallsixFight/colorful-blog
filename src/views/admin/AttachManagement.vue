@@ -204,7 +204,7 @@ export default {
           if (response.data.success) {
             this.$message.success(response.data.message);
             const p = this.page - 1;
-            if (this.page * this.page_size + 1 >= this.total) {
+            if (p * this.page_size + 1 >= this.total) {
               this.page = p;
             }
             this.handleCurrentPageChange(this.page);
