@@ -69,6 +69,7 @@
 </template>
 <script>
 import { stringify } from "qs";
+import bus from "@/bus";
 export default {
   name: "articleList",
   data() {
@@ -82,6 +83,13 @@ export default {
     };
   },
   created: function() {
+    bus.$on("page", page => {
+      console.log("lueluelue");
+      if (window.location.pathname !== "/articlesList") {
+        this.$router.replace("/articlesList");
+      }
+      this.handleCurrentPageChange(page);
+    });
     this.handleCurrentPageChange(1);
   },
   methods: {
@@ -99,7 +107,7 @@ export default {
             this.total = resp.total;
             this.article_list = resp.data;
             this.page = val;
-            this.last_page = this.total % this.page_size;
+            this.last_page = this.total / this.page_size + 1;
           } else {
             this.$message.error(response.data.message);
           }

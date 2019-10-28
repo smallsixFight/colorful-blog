@@ -38,7 +38,7 @@ export default new Router({
           meta: { requireAuth: false }
         },
         {
-          path: '/categories',
+          path: '/category',
           component: () => import('./views/colorfulStory/Meta.vue'),
           meta: { requireAuth: false }
         },
@@ -53,7 +53,7 @@ export default new Router({
           meta: { requireAuth: false }
         },
         {
-          path: '/page/:cid',
+          path: '/page/:id',
           component: () => import('./views/colorfulStory/Page.vue'),
           meta: { requireAuth: false }
         },

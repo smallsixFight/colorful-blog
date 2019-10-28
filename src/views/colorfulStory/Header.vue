@@ -1,12 +1,12 @@
-<template>
+<template ref="header">
   <header id="header" class="clearfix" v-loading="loading">
     <div class="container-fluid">
       <div class="row">
         <div class="logo">
           <div class="header-logo">
-            <router-link to="/">
+            <a href="javascript:;" @click="firstPage()">
               <span class="b">首页</span>
-            </router-link>
+            </a>
             <a target="_blank" :href="github_url">
               <span class="b">Gitub</span>
             </a>
@@ -21,7 +21,7 @@
             </router-link>
             <span v-for="pageInfo in page_list" :key="pageInfo.id">
               <router-link :to="'/page/' + pageInfo.id" :index="pageInfo.id">
-                <span class="b">{{ pageInfo.slug || pageInfo.title }}</span>
+                <span class="b">{{ pageInfo.title }}</span>
               </router-link>
             </span>
           </div>
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import bus from "@/bus";
 export default {
   data() {
     return {
@@ -63,6 +64,9 @@ export default {
     this.getInitData();
   },
   methods: {
+    firstPage() {
+      bus.$emit("page", 1);
+    },
     getInitData() {
       this.loading = true;
       this.$axios
@@ -85,7 +89,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 @import "../../assets/css/bootstrap.min.css";

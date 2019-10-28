@@ -3,7 +3,7 @@
     <div id="main" class="col-12 clearfix" role="main">
       <article class="posti">
         <h1 style="text-align:right;" class="post-title">Friends</h1>
-        <div class="post-content" itemprop="pageBody">
+        <div itemprop="pageBody">
           <ul v-if="link_list.length > 0">
             <li v-for="link in link_list" :key="link.id">
               <a target="_blank" :title="link.description" :href="link.url">{{link.owner}}</a>
@@ -32,7 +32,7 @@ export default {
           this.link_list = resp.data.data;
         } else {
           // this.$router.replace("/404")
-          this.$message.error(response.data.message);
+          this.$message.error(resp.data.message);
         }
       })
       .finally(() => {

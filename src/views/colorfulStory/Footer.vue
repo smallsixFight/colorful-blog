@@ -1,21 +1,26 @@
 <template>
-    <footer id="footer" role="contentinfo">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    &copy; {{ year }} colorful.
-                    Designed by <a target="_blank" href="https://github.com/txperl/Story-for-Typecho/">Story - txperl</a>, Modified by lamlake.
-                </div>
-            </div>
+  <footer id="footer" role="contentinfo">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          &copy; {{ year }} Colorful |
+          Designed by
+          <a
+            target="_blank"
+            href="https://github.com/txperl/Story-for-Typecho/"
+          >txperl‘ story</a>, Modified by lamlake
+          <p>粤 ICP 备 18051440 号</p>
         </div>
-    </footer>
+      </div>
+    </div>
+  </footer>
 </template>
 <script>
 export default {
-    data() {
-        return {
-            year: new Date().getFullYear()
-        }
-    }
-}
+  data() {
+    return {
+      year: new Date().getFullYear()
+    };
+  }
+};
 </script>
