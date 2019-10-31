@@ -3,12 +3,12 @@
     <h1 style="text-align:center;">读书</h1>
     <hr />
     <div class="book-background">
-      <div v-if="wish_list.length > 0">
+      <div v-if="wish_info && wish_info.list.length > 0">
         <h3>想读</h3>
         <div class="douban-book-list doubanboard-list">
           <div
             class="doubanboard-item"
-            v-for="item in wish_list"
+            v-for="item in wish_info.list"
             :key="item.id"
             title="查看详细内容"
           >
@@ -18,20 +18,30 @@
             </a>
           </div>
         </div>
+        <div style="text-align: center">
+          <el-button class="button" v-if="has_next_wish" @click="() => getBookInfo('wish', wish_page +1)">加载更多</el-button>
+          <el-button class="button" v-else>无啦</el-button>
+        </div>
       </div>
       <hr />
-      <div v-if="read_list.length > 0">
+      <div v-if="read_info && read_info.list.length > 0">
         <h3>读过</h3>
         <div class="douban-book-list doubanboard-list">
           <div
             class="doubanboard-item"
-            v-for="item in read_list"
+            v-for="item in read_info.list"
             :key="item.id"
-            :title="item.title"
+            :title="查看详细内容"
           >
-            <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
-            <div class="doubanboard-title">{{item.title}}</div>
+            <a @click="() => changeVisible(true, item)">
+              <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
+              <div class="doubanboard-title">{{item.title}}</div>
+            </a>
           </div>
+        </div>
+        <div style="text-align: center">
+          <el-button class="button" v-if="has_next_raad" @click="() => getBookInfo('wish', read_page +1)">加载更多</el-button>
+          <el-button class="button" v-else>无啦</el-button>
         </div>
       </div>
     </div>
@@ -50,10 +60,15 @@
         </el-form-item>
         <el-form-item label="简 介: ">
           <el-input readonly type="textarea" id="textarea" :rows="6" v-model="book_info.summary"></el-input>
-          <!-- <span style="width: 500px;">{{book_info.summary}}</span> -->
         </el-form-item>
         <el-form-item label="读后感: " v-if="book_info.short_comment">
-          <el-input readonly type="textarea" id="textarea" :rows="6" v-model="book_info.short_comment"></el-input>
+          <el-input
+            readonly
+            type="textarea"
+            id="textarea"
+            :rows="6"
+            v-model="book_info.short_comment"
+          ></el-input>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -68,9 +83,11 @@ export default {
       visible: false,
       book_info: {},
       loading: false,
-      wish_list: [],
-      read_list: [],
+      wish_info: null,
+      read_info: null,
       wish_page: 1,
+      has_next_wish: false,
+      has_next_raad: false,
       read_page: 1,
       page_size: 8
     };
@@ -100,18 +117,28 @@ export default {
         .get(this.HOST + `/visitor/book/list?${stringify(params)}`)
         .then(resp => {
           if (resp.data.success) {
+            let arr = resp.data.data;
             if (typ === "all") {
-              let arr = resp.data.data;
               for (let i in arr) {
                 if (arr[i].type === "wish") {
-                  this.wish_list = arr[i].list;
+                  this.wish_info = arr[i];
                   continue;
                 }
                 if (arr[i].type === "read") {
-                  this.read_list = arr[i].list;
+                  this.read_info = arr[i];
                 }
               }
+            } else if (typ === "wish") {
+              this.wish_page += 1;
+              this.wish_info.list.push(...arr[0].list);
+            } else if (typ === "read") {
+              this.read_page += 1;
+              this.read_info.list.push(...arr[0].list);
             }
+            this.has_next_wish =
+              this.wish_page * this.page_size < this.wish_info.total;
+            this.has_next_raad =
+              this.read_page * this.page_size < this.read_info.total;
           } else {
             this.$message.error(resp.data.message);
           }
@@ -125,6 +152,20 @@ export default {
 </script>
 
 <style scope>
+.button {
+  font-size: 18px;
+  background-color: #d5d5d5;
+  color: #000;
+  border-color: #d5d5d5;
+}
+
+.button:hover {
+  font-size: 18px;
+  background-color: #a5a5a5;
+  color: #000;
+  border-color: #a5a5a5;
+}
+
 #textarea {
   width: 500px;
   overflow-x: scroll;
