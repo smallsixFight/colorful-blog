@@ -51,7 +51,7 @@ export default {
   border-radius: 16px;
 }
 .index::-webkit-scrollbar-thumb:hover {
-  background-color: #bbb;
+  background-color: #777;
 }
 </style>
 

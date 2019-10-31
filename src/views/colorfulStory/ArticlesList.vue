@@ -84,10 +84,6 @@ export default {
   },
   created: function() {
     bus.$on("page", page => {
-      console.log("lueluelue");
-      if (window.location.pathname !== "/articlesList") {
-        this.$router.replace("/articlesList");
-      }
       this.handleCurrentPageChange(page);
     });
     this.handleCurrentPageChange(1);

@@ -65,6 +65,9 @@ export default {
   },
   methods: {
     firstPage() {
+      if (window.location.pathname !== "/articlesList") {
+        this.$router.replace("/articlesList");
+      }
       bus.$emit("page", 1);
     },
     getInitData() {
