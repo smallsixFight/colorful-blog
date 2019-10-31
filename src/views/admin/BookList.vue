@@ -43,8 +43,8 @@
         <el-table-column align="center" label="状态">
           <template v-slot:default="book_info">
             <el-tag
-              :type="book_info.row.status === '读过' ? 'success' : 'warning'"
-            >{{ book_info.row.status }}</el-tag>
+              :type="book_info.row.status === 'read' ? 'success' : 'warning'"
+            >{{ book_info.row.status === 'read' ? '读过' : '想读' }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="center" label="豆瓣链接">
@@ -98,8 +98,8 @@
           </el-form-item>
           <el-form-item label="状 态">
             <el-select v-model="edit_info.status" style="width: 500px;">
-              <el-option label="想读" value="想读"></el-option>
-              <el-option label="读过" value="读过"></el-option>
+              <el-option label="想读" value="wish"></el-option>
+              <el-option label="读过" value="read"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="简 介">
@@ -136,11 +136,11 @@
 }
 #textarea::-webkit-scrollbar-thumb {
   height: 40px;
-  background-color: #aaa;
+  background-color: #bbb;
   border-radius: 16px;
 }
 #textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #bbb;
+  background-color: #aaa;
 }
 </style>
 <script>
@@ -271,10 +271,7 @@ export default {
             this.total = resp.total;
             this.list = resp.data;
             for (let idx in this.list) {
-              this.list[idx].summary = this.list[idx].summary.replace(
-                /\\n/g,
-                "\n"
-              );
+              this.list[idx].summary = this.list[idx].summary.replace(/\\n/g, "\n");
               this.list[idx].short_comment = this.list[
                 idx
               ].short_comment.replace(/\\n/g, "\n");
