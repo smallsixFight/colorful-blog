@@ -223,9 +223,11 @@ blockquote ul, blockquote ol {
 }
 .logo {
     margin: 2em 0 2em 2em;
+    width: 100%;
 }
 .header-logo {
     font-weight: 300;
+    text-align: center;
 }
 .header-logo span {
     display: inline-block;
@@ -419,10 +421,6 @@ blockquote ul, blockquote ol {
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
     overflow: hidden;
 }
 #comment-form .comment-inputs input:not(:last-child) {
@@ -455,16 +453,8 @@ blockquote ul, blockquote ol {
     overflow: auto;
 }
 #comment-form .comment-buttons {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
     height: 50px;
     padding: 8px 16px;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -476,10 +466,6 @@ blockquote ul, blockquote ol {
     padding: 0 16px;
     border-radius: 4px;
     color: #fff;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
 }
 #comment-form .comment-buttons #submitComment:hover {
     background: #BF360C;
