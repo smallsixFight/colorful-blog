@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div>
     <h1 style="text-align:center;">读书</h1>
     <hr />
     <div class="book-background">
@@ -19,7 +19,12 @@
           </div>
         </div>
         <div style="text-align: center">
-          <el-button class="button" v-if="has_next_wish" @click="() => getBookInfo('wish', wish_page +1)">加载更多</el-button>
+          <el-button
+            :loading="loading"
+            class="button"
+            v-if="has_next_wish"
+            @click="() => getBookInfo('wish', wish_page +1)"
+          >加载更多</el-button>
           <el-button class="button" v-else>无啦</el-button>
         </div>
       </div>
@@ -40,7 +45,12 @@
           </div>
         </div>
         <div style="text-align: center">
-          <el-button class="button" v-if="has_next_raad" @click="() => getBookInfo('wish', read_page +1)">加载更多</el-button>
+          <el-button
+            :loading="loading"
+            class="button"
+            v-if="has_next_raad"
+            @click="() => getBookInfo('read', read_page +1)"
+          >加载更多</el-button>
           <el-button class="button" v-else>无啦</el-button>
         </div>
       </div>
@@ -144,7 +154,9 @@ export default {
           }
         })
         .finally(() => {
-          this.loading = false;
+          setInterval(() => {
+            this.loading = false;
+          }, 1000);
         });
     }
   }
