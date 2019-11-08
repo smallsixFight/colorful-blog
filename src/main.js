@@ -16,25 +16,13 @@ function getPath() {
   return '/' + window.location.pathname.split("/")[1] + '/';
 }
 
-Vue.filter('unixTimeFormat', function (val) {
-  let date = new Date(val * 1000);
-  let Y = date.getFullYear() + '-';
-  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-  return Y + M + D;
-})
-
-Vue.filter('blogTimeFormat', function (val) {
-  let date = new Date(val * 1000).toDateString().split(" ");
-  return date[1] + " " + date[2] + ", " + date[3];
-})
-
-Vue.filter('archiveTimeFormat', function (val) {
-  let date = new Date(val * 1000);
-  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-  let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ': ';
-  return M + D;
-})
+// Vue.filter('unixTimeFormat', function (val) {
+//   let date = new Date(val * 1000);
+//   let Y = date.getFullYear() + '-';
+//   let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+//   let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+//   return Y + M + D;
+// })
 
 router.beforeEach((to, from, next) => {
   let accessToken = sessionStorage.getItem("accessToken")
@@ -81,16 +69,13 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          ElementUI.Message.warning(error.response.data.message);
+          ElementUI.Message.warning("400 " + error.response.data.message);
           break;
         case 401:
-          ElementUI.Message.warning("登录超时，请重新登录");
+          ElementUI.Message.warning("401 登录超时，请重新登录");
           break;
         case 500:
-          ElementUI.Message.error("服务器错误T_T")
-          router.replace({
-            path: getPath()
-          });
+          ElementUI.Message.error("500 服务器错误T_T")
           break;
       }
     } else {
