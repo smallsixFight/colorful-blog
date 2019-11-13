@@ -175,7 +175,7 @@ export default {
             this.handleEdit();
             this.handleCurrentPageChange(this.page);
           } else {
-            this.$message.warn(resp.data.message);
+            this.$message.warning(resp.data.message);
           }
         })
         .finally(() => {

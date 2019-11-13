@@ -112,11 +112,11 @@ export default {
       this.loading = true;
       this.$axios
         .get(this.HOST + "/admin/attach/sync")
-        .then(response => {
-          if (response.data.success) {
-            this.$message.success(response.data.message);
+        .then(resp => {
+          if (resp.data.success) {
+            this.$message.success(resp.data.message);
           } else {
-            this.$message.success(response.data.message);
+            this.$message.warning(resp.data.message);
           }
         })
         .finally(() => {
