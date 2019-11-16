@@ -211,7 +211,6 @@ export default {
   max-width: 100%;
   margin-top: 1em;
 }
-.doubanboard-list,
 .doubanboard-list * {
   box-sizing: border-box;
 }

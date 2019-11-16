@@ -10,6 +10,9 @@
             <el-form-item label="博客名称">
               <el-input v-model="blog_setting.blog_name" placeholder="请输入博客名称" size="small"></el-input>
             </el-form-item>
+            <el-form-item label="Github">
+              <el-input v-model="blog_setting.github_url" placeholder="github 地址" size="small"></el-input>
+            </el-form-item>
             <el-form-item>
               <el-button
                 size="small"
