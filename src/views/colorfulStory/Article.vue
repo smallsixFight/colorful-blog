@@ -27,7 +27,7 @@
                 v-for="tag in tag_list"
                 :key="tag.id"
                 :to="{ path: '/tags', query: { id: tag.id, name: tag.name } }"
-              >{{tag.name}}</router-link>
+              >{{tag.name}}&nbsp;&nbsp;</router-link>
             </section>
             <section style="float:right;">
               <!-- <span><a id="btn-comments" href="javascript:isComments();">show comments</a></span> ·  -->

@@ -31,7 +31,7 @@
       <div v-if="read_info && read_info.list.length > 0">
         <hr />
         <h3>读过</h3>
-        <div class="douban-book-list doubanboard-list">
+        <div class="doubanboard-list">
           <div
             class="doubanboard-item"
             v-for="item in read_info.list"
