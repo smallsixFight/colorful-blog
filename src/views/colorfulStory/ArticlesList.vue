@@ -103,7 +103,7 @@ export default {
             this.total = resp.total;
             this.article_list = resp.data;
             this.page = val;
-            this.last_page = this.total / this.page_size + 1;
+            this.last_page = Math.ceil(this.total /this.page_size);
           } else {
             this.$message.error(response.data.message);
           }
