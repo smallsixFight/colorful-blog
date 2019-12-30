@@ -1,4 +1,5 @@
 <template>
+<div class="admin-body">
   <div class="wrapper">
     <v-head></v-head>
     <v-sidebar></v-sidebar>
@@ -10,6 +11,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>

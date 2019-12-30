@@ -71,7 +71,7 @@ export default new Router({
     {
       path: '/admin',
       component: Home,
-      meta: { title: '自述文件' },
+      meta: { title: 'Colorful 博客管理后台' },
       children: [
         {
           path: '/admin/dashboard',

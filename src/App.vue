@@ -1,13 +1,8 @@
 <template>
-  <div id="app" class="scrollbar">
+<div>
     <router-view />
-  </div>
+</div>
 </template>
 <style>
-@import "./assets/css/admin/main.css";
-
-.scrollbar {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+@import "./assets/css/main.css";
 </style>

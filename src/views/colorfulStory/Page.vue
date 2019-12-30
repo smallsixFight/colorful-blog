@@ -1,13 +1,14 @@
 <template>
-  <div class="row page-content" v-loading="loading">
-    <div id="main" class="col-12 clearfix" role="main">
-      <article class="posti">
-        <h1 class="post-title" itemprop="title headline">{{page_info.title}}</h1>
-        <div itemprop="pageBody">
+  <div class="page-body" v-loading="loading">
+    <main class="page">
+      <div class="page-info">
+        <h1 class="title">{{page_info.title}}</h1>
+        <p class="page-meta"><time>{{page_info.create_time.split(" ")[0]}}</time></p>
+        <div>
           <span v-html="page_info.content"></span>
         </div>
-      </article>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 <script>
@@ -48,10 +49,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.page-content {
-  background-color: #d5dbd9;
-  margin-left: 10%;
-  margin-right: 10%;
-}
-</style>
