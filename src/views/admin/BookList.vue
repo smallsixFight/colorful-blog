@@ -117,32 +117,6 @@
     </el-dialog>
   </div>
 </template>
-<style>
-.search {
-  display: block;
-  margin: 0 auto;
-  width: 60%;
-}
-#textarea {
-  width: 500px;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  box-sizing: border-box;
-}
-
-#textarea::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-#textarea::-webkit-scrollbar-thumb {
-  height: 40px;
-  background-color: #bbb;
-  border-radius: 16px;
-}
-#textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #aaa;
-}
-</style>
 <script>
 import { stringify } from "qs";
 export default {

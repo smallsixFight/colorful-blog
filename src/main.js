@@ -11,18 +11,16 @@ Vue.prototype.$axios = axios
 // Vue.prototype.HOST = 'http://localhost:9011/api'
 Vue.prototype.HOST = '/api'
 Vue.use(ElementUI)
+Vue.directive('highlight', function (el) {
+  let blocks = el.querySelectorAll('pre code');
+  blocks.forEach((block) => {
+    hljs.highlightBlock(block)
+  })
+})
 
 function getPath() {
   return '/' + window.location.pathname.split("/")[1] + '/';
 }
-
-// Vue.filter('unixTimeFormat', function (val) {
-//   let date = new Date(val * 1000);
-//   let Y = date.getFullYear() + '-';
-//   let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-//   let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-//   return Y + M + D;
-// })
 
 router.beforeEach((to, from, next) => {
   let accessToken = sessionStorage.getItem("accessToken")

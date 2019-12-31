@@ -1,44 +1,33 @@
 <template>
-  <div v-loading="loading">
-    <div class="row article-content">
-      <div id="main" class="col-12 clearfix" role="main">
-        <article class="posti">
-          <h1 class="post-title" itemprop="name headline">{{article.title}}</h1>
-          <div class="post-meta">
-            <p>
-              <time class="index-time" :datatime="article.create_time">{{ article.create_time }}</time> in
-              <span v-if="category">
-                <router-link
-                  :key="category.id"
-                  :to="{ path: '/category', query: { id: category.id, name: category.name } }"
-                >{{category.name}}</router-link>
-              </span>
-            </p>
-          </div>
-
-          <div itemprop="articleBody">
-            <span v-html="article.content"></span>
-          </div>
-
-          <div style="display:block;margin-bottom:2em;" class="clearfix">
-            <section style="float:left;" v-if="tag_list && tag_list.length > 0">
-              <span itemprop="keywords" class="tags">tag(s):</span>
-              <router-link
-                v-for="tag in tag_list"
-                :key="tag.id"
-                :to="{ path: '/tags', query: { id: tag.id, name: tag.name } }"
-              >{{tag.name}}&nbsp;&nbsp;</router-link>
-            </section>
-            <section style="float:right;">
-              <!-- <span><a id="btn-comments" href="javascript:isComments();">show comments</a></span> ·  -->
-              <span>
-                <a href="#" @click="goBack">back</a>&nbsp;
-              </span>
-            </section>
-          </div>
-        </article>
-      </div>
-    </div>
+  <div v-loading="loading" class="article-body">
+    <main class="article">
+      <article>
+        <h1 class="title">{{article.title}}</h1>
+        <p class="article-meta">
+          <time>{{ article.create_time }}</time> in
+          <router-link
+            v-if="category"
+            :key="category.id"
+            :to="{ path: '/category', query: { id: category.id, name: category.name } }"
+          >
+            <a class="category">{{category.name}}</a>
+          </router-link>
+        </p>
+        <div v-highlight>
+          <span v-html="article.content"></span>
+        </div>
+        <div class="tags" v-if="tag_list && tag_list.length > 0">
+          <span>
+            <router-link
+              v-for="tag in tag_list"
+              :key="tag.id"
+              :to="{ path: '/tags', query: { id: tag.id, name: tag.name } }"
+            >{{tag.name}}
+            </router-link>
+          </span>
+        </div>
+      </article>
+    </main>
   </div>
 </template>
 <script>
@@ -92,10 +81,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.article-content {
-  background-color: #d5dbd9;
-  margin-left: 10%;
-  margin-right: 10%;
-}
-</style>

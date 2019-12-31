@@ -1,74 +1,40 @@
 <template>
   <div v-loading="loading">
-    <div class="row">
-      <div class="archive-header">
-        <span>- {{meta_type}} · {{name}} -</span>
-      </div>
+    <div class="preface">- {{meta_type}} · {{name}} -</div>
+    <main class="article-list" v-if="total > 0">
+      <router-link v-for="article in article_list" :key="article.id" :to="'/article/' + article.id">
+        <a class="cube">
+          <div class="category">{{article.category}}</div>
+          <div class="bottom">
+            <span class="time">{{ article.create_time.split(" ")[0] }}</span>
+            <span class="title">{{article.title}}</span>
+          </div>
+        </a>
+      </router-link>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </main>
+    <main v-if="total === 0" style="text-align: center; margin: 2rem;">
+      <p>暂无此类型文章 (,,• ₃ •,,)</p>
+      <a @click="goBack" class="go-back">返回</a>
+    </main>
+    <div class="pagination" v-if="total > 8">
+      <a v-if="page -2 >=2" @click="handleCurrentPageChange(1)">1</a>
+      <a v-if="page -2 >2">...</a>
+      <a v-if="page -2 >0" @click="handleCurrentPageChange(page -2)">{{page -2}}</a>
+      <a v-if="page -1 >0" @click="handleCurrentPageChange(page -1)">{{page -1}}</a>
+      <a class="current">{{page}}</a>
+      <a v-if="page +1 <= last_page" @click="handleCurrentPageChange(page +1)">{{page +1}}</a>
+      <a v-if="page +2 <= last_page" @click="handleCurrentPageChange(page +2)">{{page +2}}</a>
+      <a v-if="page +2 < last_page">...</a>
+      <a v-if="page +2 <last_page" @click="handleCurrentPageChange(last_page)">{{last_page}}</a>
     </div>
-    <div class="row" v-if="total > 0">
-      <div id="main" role="main">
-        <ul class="post-list clearfix">
-          <li
-            class="post-item grid-item"
-            itemscope
-            itemtype="http://schema.org/BlogPosting"
-            v-for="article in article_list"
-            :key="article.id"
-          >
-            <router-link :to="'article/' + article.id" class="post-link">
-              <h3 class="post-title">
-                <time class="index-time" :datatime="article.create_time">{{ article.create_time }}</time>
-                <br />
-                {{article.title}}
-              </h3>
-              <div class="post-meta">{{article.category}}</div>
-            </router-link>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div v-if="total === 0" class="row">
-      <span class="archive-header">
-        暂无此类型文章 (,,• ₃ •,,)
-        <router-link to="archive">返回</router-link>
-      </span>
-    </div>
-    <div class="row" v-if="total > 8">
-      <div class="nav-page">
-        <ol class="page-navigator">
-          <span v-if="page -2 >=2">
-            <li>
-              <a href="javascript:;" @click="handleCurrentPageChange(1)">{{1}}</a>
-            </li>
-            <li v-if="page -2 >2">
-              <a href="javascript:;">...</a>
-            </li>
-          </span>
-          <li v-if="page -2 >0">
-            <a href="javascript:;" @click="handleCurrentPageChange(page -2)">{{page -2}}</a>
-          </li>
-          <li v-if="page -1 >0">
-            <a href="javascript:;" @click="handleCurrentPageChange(page -1)">{{page -1}}</a>
-          </li>
-          <li>
-            <a href="javascript:;" class="current">{{page}}</a>
-          </li>
-          <li v-if="page +1 <= last_page">
-            <a href="javascript:;" @click="handleCurrentPageChange(page +1)">{{page +1}}</a>
-          </li>
-          <li v-if="page +2 <= last_page">
-            <a href="javascript:;" @click="handleCurrentPageChange(page +2)">{{page +2}}</a>
-          </li>
-          <span>
-            <li v-if="page +2 < last_page">
-              <a href="javascript:;">...</a>
-            </li>
-            <li v-if="page +2 < last_page">
-              <a href="javascript:;" @click="handleCurrentPageChange(last_page)">{{last_page}}</a>
-            </li>
-          </span>
-        </ol>
-      </div>
+    <div class="pagination" v-else>
+      <a class="current">{{page}}</a>
     </div>
   </div>
 </template>
@@ -119,7 +85,7 @@ export default {
             this.total = resp.total;
             this.article_list = resp.data;
             this.page = page;
-            this.last_page = Math.ceil(this.total /this.page_size);
+            this.last_page = Math.ceil(this.total / this.page_size);
           } else {
             this.$message.error(response.data.message);
           }
