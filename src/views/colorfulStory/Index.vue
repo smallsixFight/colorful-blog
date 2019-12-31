@@ -3,7 +3,7 @@
     <div class="bg"></div>
     <v-header></v-header>
       <transition name="move" mode="out-in">
-        <keep-alive exclude="articleList Article">
+        <keep-alive include="articleList" exclude="Article">
           <router-view></router-view>
         </keep-alive>
       </transition>
