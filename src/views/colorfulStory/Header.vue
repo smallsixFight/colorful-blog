@@ -1,51 +1,35 @@
-<template ref="header">
-  <header id="header" class="clearfix" v-loading="loading">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="logo">
-          <div class="header-logo">
-            <a href="javascript:;" @click="firstPage()">
-              <span class="b">首页</span>
-            </a>
-            <a target="_blank" :href="github_url">
-              <span class="b">Gitub</span>
-            </a>
-            <router-link to="/read">
-              <span class="b">读书</span>
-            </router-link>
-            <router-link to="/archive">
-              <span class="b">归档</span>
-            </router-link>
-            <router-link to="/link" v-if="has_link">
-              <span class="b">友链</span>
-            </router-link>
-            <span v-for="pageInfo in page_list" :key="pageInfo.id">
-              <router-link :to="'/page/' + pageInfo.id" :index="pageInfo.id">
-                <span class="b">{{ pageInfo.title }}</span>
-              </router-link>
-            </span>
-          </div>
-          <div id="menu-page">
-            <!-- <@commonTag method="menus">
-                            <#list menus?sort_by('menuSort') as menu>
-                                <a href="${menu.menuUrl}"><li>${menu.menuName}</li></a>
-                            </#list>
-            </@commonTag>-->
-          </div>
-          <div id="search-box">
-            <form id="search" method="post" action="./" role="search">
-              <input
-                autocomplete="off"
-                type="text"
-                name="s"
-                id="menu-search"
-                placeholder="Type something~"
-              />
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+<template>
+  <header v-loading="loading">
+    <nav>
+      <ul class="navigation">
+        <li>
+            <a href="javascript:;" @click="firstPage()">首页</a>
+        </li>
+        <li>
+          <a target="_blank" :href="github_url">Github</a>
+        </li>
+        <li>
+          <router-link to="/read">
+            <a>读书</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/link">
+            <a>友链</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/archive">
+            <a>归档</a>
+          </router-link>
+        </li>
+        <li v-for="pageInfo in page_list" :key="pageInfo.id">
+          <router-link :to="'/page/' + pageInfo.id" :index="pageInfo.id">
+            <a>{{ pageInfo.title }}</a>
+          </router-link>
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 
@@ -92,8 +76,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-@import "../../assets/css/bootstrap.min.css";
-@import "../../assets/css/main.css";
-</style>

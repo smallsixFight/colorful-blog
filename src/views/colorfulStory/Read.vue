@@ -1,67 +1,30 @@
 <template>
-  <div>
-    <h1 style="text-align:center;">读书</h1>
-    <hr />
-    <div class="book-background">
-      <div v-if="wish_info && wish_info.list.length > 0">
-        <h3>想读</h3>
-        <div class="douban-book-list doubanboard-list">
-          <div
-            class="doubanboard-item"
-            v-for="item in wish_info.list"
-            :key="item.id"
-            title="查看详细内容"
-          >
-            <a @click="() => changeVisible(true, item)">
-              <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
-              <div class="doubanboard-title">{{item.title}}</div>
-            </a>
-          </div>
-        </div>
-        <div style="text-align: center">
-          <el-button
-            :loading="loading"
-            class="button"
-            v-if="has_next_wish"
-            @click="() => getBookInfo('wish', wish_page +1)"
-          >加载更多</el-button>
-          <el-button class="button" v-else>无啦</el-button>
-        </div>
-      </div>
-      <div v-if="read_info && read_info.list.length > 0">
-        <hr />
-        <h3>读过</h3>
-        <div class="doubanboard-list">
-          <div
-            class="doubanboard-item"
-            v-for="item in read_info.list"
-            :key="item.id"
-            :title="查看详细内容"
-          >
-            <a @click="() => changeVisible(true, item)">
-              <div class="doubanboard-thumb" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
-              <div class="doubanboard-title">{{item.title}}</div>
-            </a>
-          </div>
-        </div>
-        <div style="text-align: center">
-          <el-button
-            :loading="loading"
-            class="button"
-            v-if="has_next_raad"
-            @click="() => getBookInfo('read', read_page +1)"
-          >加载更多</el-button>
-          <el-button class="button" v-else>无啦</el-button>
-        </div>
-      </div>
+  <div class="book-info">
+    <div class="preface">了解得越多，就能减少个人对各类事物无知产成的狭隘、偏见。 ——个人瞎掰</div>
+     <h2>读过</h2>
+    <div class="book-list" v-if="read_info && read_info.list.length > 0">
+      <a v-for="item in read_info.list" :key="item.id" title="查看详细内容" @click="() => changeVisible(true, item)">
+        <div class="book-image" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
+        <div class="book-title">{{item.title}}</div>
+      </a>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="book-list" v-if="wish_info && wish_info.list.length > 0">
+    <hr>
+    <h2>想读</h2>
+      <a v-for="item in wish_info.list" :key="item.id" title="查看详细内容" @click="() => changeVisible(true, item)">
+        <div class="book-image" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
+        <div class="book-title">{{item.title}}</div>
+      </a>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
     </div>
     <el-dialog
       :visible.sync="visible"
       title="详情"
+      class="book-dialog"
       @closed="() => changeVisible(false)"
-      width="760px"
     >
-      <el-form label-position="right" label-width="100px" style="margin-left: 5%; margin-right: 5%">
+      <el-form label-position="right">
         <el-form-item label="书 名: ">
           <a title="点击前往豆瓣" :href="book_info.douban_url" target="_blank">{{book_info.title}}</a>
         </el-form-item>
@@ -162,105 +125,3 @@ export default {
   }
 };
 </script>
-
-<style scope>
-.button {
-  font-size: 18px;
-  background-color: #d5d5d5;
-  color: #000;
-  border-color: #d5d5d5;
-}
-
-.button:hover {
-  font-size: 18px;
-  background-color: #a5a5a5;
-  color: #000;
-  border-color: #a5a5a5;
-}
-
-#textarea {
-  width: 500px;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding-top: 10px;
-}
-
-#textarea::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-#textarea::-webkit-scrollbar-thumb {
-  height: 40px;
-  background-color: #bbb;
-  border-radius: 16px;
-}
-#textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #aaa;
-}
-.book-background {
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
-.doubanboard-list {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  max-width: 100%;
-  margin-top: 1em;
-}
-.doubanboard-list * {
-  box-sizing: border-box;
-}
-.doubanboard-item {
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-  transition: ease all 0.3s;
-  overflow: hidden;
-  background: #e7e8e1;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  border: none !important;
-  display: block;
-}
-.doubanboard-thumb {
-  width: 100%;
-  padding-top: 141%;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.doubanboard-title,
-.doubanboard-title a {
-  margin: 8px 0 !important;
-  font-size: 1.2em !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  text-align: center !important;
-  color: #202020 !important;
-  font-weight: 700 !important;
-  border: none !important;
-}
-
-@media screen and (min-width: 769px) {
-  .doubanboard-item {
-    width: 12%;
-    min-width: 12%;
-    max-width: 12%;
-    margin: 2%;
-    margin-left: 8%;
-  }
-}
-@media screen and (max-width: 400px) {
-  .doubanboard-item {
-    width: 45%;
-    min-width: 45%;
-    max-width: 45%;
-    margin: 2.5%;
-  }
-}
-</style>

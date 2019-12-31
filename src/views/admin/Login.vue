@@ -1,5 +1,6 @@
 <template>
   <div class="login-wrap">
+    <div class="bg"></div>
     <div class="ms-login">
       <div class="ms-title">Colorful</div>
       <el-form
@@ -76,19 +77,16 @@ export default {
 
 <style scoped>
 .login-wrap {
-  position: relative;
   width: 100%;
   height: 100%;
-  background-color: #d2f0f4;
-  background-image: url("../../assets/img/bk.png");
 }
 .ms-title {
   width: 100%;
   line-height: 50px;
   text-align: center;
   font-size: 20px;
-  color: #fff;
-  border-bottom: 1px solid #ddd;
+  color: #414141;
+  border-bottom: 1px solid #5e5e5e;
 }
 .ms-login {
   position: absolute;
@@ -97,7 +95,7 @@ export default {
   width: 350px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  background: #ebebeb;
   overflow: hidden;
 }
 .ms-content {
