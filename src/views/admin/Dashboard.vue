@@ -33,7 +33,7 @@
       </el-col>
       <el-col :span="6">
         <el-card shadow="hover" :body-style="{padding: '0px'}">
-          <div class="grid-content grid-con-1" @click="jump('sysLog')">
+          <div class="grid-content grid-con-1" @click="jump('logList')">
             <div class="grid-cont-right">
               <div class="grid-num">{{ statistics.log_num || 0 }}</div>
               <div>系统日志</div>
