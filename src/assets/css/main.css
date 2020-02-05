@@ -460,7 +460,10 @@ article .tags a::before {
   width: 50vw;
   display: flex;
   flex-wrap: wrap;
+}
 
+.archive-list .item {
+  width: 100%;
 }
 
 .archive-list h3 {
