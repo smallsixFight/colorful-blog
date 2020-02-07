@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <div class="preface">你，想成为我的 TOMODACHI 吗？（掩面，逃</div>
+    <div class="preface">如果你有难，我会随时地来帮你。但是，如果我有难，我就绝对不出现在你的面前。 ——《北野武的小酒馆》</div>
     <div class="link-list">
       <main>
           <ul v-if="link_list.length > 0">

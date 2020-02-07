@@ -414,6 +414,27 @@ article .tags a::before {
   width: 8vw;
 }
 
+
+.book-info .book-list > p {
+  width: 100%; 
+  text-align: center;
+}
+
+.book-info .book-list button {
+  font-size: 16px;
+  color: #333333;
+  font-family: "Noto Sans SC";
+  font-weight: 500;
+  padding: .4rem 1rem;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  border: 2px solid #e7e7e7;
+}
+
+.book-info .book-list button:hover {
+  background-color: #e7e7e7;
+}
+
 .book-info .book-list .book-image {
   padding-top: 130%;
   background-size: cover;
