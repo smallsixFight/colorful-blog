@@ -15,7 +15,7 @@
       title="预览"
       @closed="closePreDialog"
     >
-      <div class="content" style="height:600px; border: solid 1px #ccc; border-radius: 4px;">
+      <div v-highlight class="content" style="height:600px; border: solid 1px #ccc; border-radius: 4px;">
         <div style="padding: 18px;" v-html="html_content"></div>
       </div>
     </el-dialog>

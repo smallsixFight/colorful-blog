@@ -4,12 +4,13 @@ import router from './router'
 import ElementUI from 'element-ui';
 import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
+import hljs from 'highlight.js';
 
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
-// Vue.prototype.HOST = 'http://localhost:9011/api'
-Vue.prototype.HOST = '/api'
+Vue.prototype.HOST = 'http://localhost:9011/api'
+// Vue.prototype.HOST = '/api'
 Vue.use(ElementUI)
 Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code');

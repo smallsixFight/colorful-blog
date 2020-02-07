@@ -3,7 +3,7 @@
     <div class="preface">是否变得怠惰了呢？</div>
     <div class="archive">
     <div class="archive-list" v-if="article_list">
-          <div v-for="item in article_list" :key="item.date">
+          <div class="item" v-for="item in article_list" :key="item.date">
             <h3>{{item.date}}</h3>
             <ul>
               <li v-for="article in item.article_list" :key="article.id">

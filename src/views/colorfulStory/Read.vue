@@ -1,22 +1,50 @@
 <template>
   <div class="book-info">
     <div class="preface">了解得越多，就能减少个人对各类事物无知产成的狭隘、偏见。 ——个人瞎掰</div>
-     <h2>读过</h2>
+    <h2>读过</h2>
     <div class="book-list" v-if="read_info && read_info.list.length > 0">
-      <a v-for="item in read_info.list" :key="item.id" title="查看详细内容" @click="() => changeVisible(true, item)">
+      <a
+        v-for="item in read_info.list"
+        :key="item.id"
+        title="查看详细内容"
+        @click="() => changeVisible(true, item)"
+      >
         <div class="book-image" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
         <div class="book-title">{{item.title}}</div>
       </a>
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <p style="width: 100%; text-align: center;" v-if="has_next_read">
+        <button @click="getBookInfo('read', read_page+1)">更多</button>
+      </p>
     </div>
     <div class="book-list" v-if="wish_info && wish_info.list.length > 0">
-    <hr>
-    <h2>想读</h2>
-      <a v-for="item in wish_info.list" :key="item.id" title="查看详细内容" @click="() => changeVisible(true, item)">
+      <hr />
+      <h2>想读</h2>
+      <a
+        v-for="item in wish_info.list"
+        :key="item.id"
+        title="查看详细内容"
+        @click="() => changeVisible(true, item)"
+      >
         <div class="book-image" :style="{backgroundImage:'url(' + item.pic_url + ')'}"></div>
         <div class="book-title">{{item.title}}</div>
       </a>
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <p v-if="has_next_wish">
+        <button @click="getBookInfo('wish', wish_page+1)">更多</button>
+      </p>
     </div>
     <el-dialog
       :visible.sync="visible"
@@ -60,7 +88,7 @@ export default {
       read_info: null,
       wish_page: 1,
       has_next_wish: false,
-      has_next_raad: false,
+      has_next_read: false,
       read_page: 1,
       page_size: 8
     };
@@ -110,7 +138,7 @@ export default {
             }
             this.has_next_wish =
               this.wish_page * this.page_size < this.wish_info.total;
-            this.has_next_raad =
+            this.has_next_read =
               this.read_page * this.page_size < this.read_info.total;
           } else {
             this.$message.error(resp.data.message);

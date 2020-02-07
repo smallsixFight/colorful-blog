@@ -4,7 +4,7 @@
       <span>书籍列表</span>
       <el-divider></el-divider>
       <el-autocomplete
-        class="search"
+        style="min-width: 60%"
         v-model="search_key"
         :fetch-suggestions="querySearchAsync"
         placeholder="搜索书籍（作者、书名、ISBN）"
